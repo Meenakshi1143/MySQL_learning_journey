@@ -6,7 +6,7 @@ Welcome to my **20 Days of MySQL** learning journey!
 
 This repository contains my daily learning notes, SQL queries, practice exercises, and hands-on work completed throughout my MySQL training.
 
-## 📂 Repository Structure
+## Repository Structure
 
 ### Day 1 - Database Fundamentals
 - Introduction to Full Stack Development
@@ -17,8 +17,19 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Database Management System (DBMS)
 - FMS vs DBMS
 
+### Day 2 – DBMS Fundamentals & Data Models
+- Differences between FMS and DBMS
+- Data, Field, Record, and Database
+- Introduction to DBMS
+- Client-Server Architecture
+- Data Models in DBMS
+  - Physical Data Model
+  - Logical Data Model
+  - Hierarchical Data Model
+  - Network Data Model
+  - Relational Data Model
 
 
-## 🎯 Objective
+## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
