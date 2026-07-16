@@ -1,0 +1,97 @@
+SQL Identifiers
+---------------
+1. SQL identifiers are names used to identify database objects such as database names, table names, column names, view names, index names, constraints, triggers, stored procedures and soo on.....
+
+**While We are declaring identifiers we have to follow some rules and regulations..
+
+1.the only allowed characters to define identifiers a-z, A-Z, 0-9, _, $
+2.must be begin with letter or underscore( _ ).
+3.We can't declare identifiers with reserved words.
+4. spaces are not considered to declare identifiers.
+5.identifiers are case sensitive.
+6.max length to declare identifiers are 15 characters.
+
+SQL
+---
+SQL( structured query language) is standardized programming language specially designed for managing and manipulating relational databases. It provides a declarative syntax that allows users to define what data they want retrieve, insert, update, or delete without specifying exactly how databases should execute these operations...
+
+SQL commands
+------------
+Types of SQL commands:
+1.DDL : (Data definition language)
+----------------------------------
+>>DDL commands used to define, create, modify, and delete the structures of a database objects such as databases, tables, views, indexes and constraints.
+             CREATE  : - by using these command to create a new databases, tables, views, indexes.. etc
+            ALTER :- by using alter command we can modify the structure of an existing table. like(add column, drop column, rename column, modify datatype, add constraints)..
+            DROP :- deletes an entire database objects permanently like(databases, tables, view, indexes..etc)
+            TRUNCATE :- by using truncate command we can delete all records from a table without deleting the table
+            RENAME :- it is used to rename the database object names.
+2.DML : (Data Manipulation Language):
+-------------------------------------
+>>DML manages data stored within databases objects..
+         INSERT :- by using insert command we can insert some records into a table
+         UPDATE :- by using the update command we can update the records based on some conditions
+         DELETE :- by using this delete command we can delete some records based on condition.
+        LOCK :- controls concurrency by locking a table restrict accesses from other transactions while it is being modified..
+3.DCL : (Data Control Language) : 
+------------------------------------------------------
+>>Manages permissions and access control on database objects.
+       GRANT : Gives specific privileges or permissions(such select, update, insert, delete, all privileges) to a database user or role.
+       REVOKE : removes previously granted permissions from database user or role. restricting their access to database objects.
+
+4.TCL : (Transaction  control language)
+-------------------------------
+>>Manages transactions to maintain data integrity.
+      COMMIT : permanently saves all changes made during the current transaction to the database. making them visible to other users
+      ROLLBACK : undo's/reverts changes made during the current transaction back to the last committed state or a save point in a case of an error..
+      SAVEPOINT : set a temporary market within a transaction to you which you can later rollback, without undoing the entire transaction.
+5.DQL : (Data Query language)
+--------------------------------
+>>used to fetch or retrieve data from the databases.
+       SELECT : retrieve data from one or more tables or views based on specified columns and conditions it is the most frequently used command in sql..
+
+
+Create
+------------
+how to create database?
+ Syntax: create database database name;
+ example: create database PFS_$;
+
+how to drop the database
+----------------------------------------
+Syntax : drop database database name;
+
+CREATE TABLE
+----------------------------
+CREATE TABLE TABLE-NAME(
+column -name data-type(size) constraint ,
+column -name data-type(size)  ,
+column -name data-type(size) ,
+column -name data-type(size)  ,
+
+-----------------
+-------------
+);
+
+DATA TYPES IN SQL
+-----------------
+numeric (int,  decimal)
+string (char, varchar , Enum, set)
+date and time
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
