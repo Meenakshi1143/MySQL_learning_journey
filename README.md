@@ -28,6 +28,14 @@ This repository contains my daily learning notes, SQL queries, practice exercise
   - Hierarchical Data Model
   - Network Data Model
   - Relational Data Model
+ 
+### Day 3 – SQL Identifiers & SQL Fundamentals
+- SQL Identifiers and Naming Rules
+- Introduction to SQL
+- Categories of SQL Commands (DDL, DML, DCL, TCL, DQL)
+- Database Creation and Deletion
+- Table Creation using SQL
+- Introduction to SQL Data Types
 
 
 ## Objective
