@@ -1,0 +1,373 @@
+mysql> show tables
+    -> show table
+    -> Terminal close -- exit!
+mysql> create database PFS_4;
+Query OK, 1 row affected (0.03 sec)
+
+mysql> create table Employees(
+    -> empID char(5),
+    -> fName varchar(100),
+    -> lName varchar(60),
+    -> age int,
+    -> doj date,
+    -> address tinytext,
+    -> dept varchar(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| employees       |
++-----------------+
+1 row in set (0.05 sec)
+
+mysql> desc employees;
++---------+--------------+------+-----+---------+-------+
+| Field   | Type         | Null | Key | Default | Extra |
++---------+--------------+------+-----+---------+-------+
+| empID   | char(5)      | YES  |     | NULL    |       |
+| fName   | varchar(100) | YES  |     | NULL    |       |
+| lName   | varchar(60)  | YES  |     | NULL    |       |
+| age     | int          | YES  |     | NULL    |       |
+| doj     | date         | YES  |     | NULL    |       |
+| address | tinytext     | YES  |     | NULL    |       |
+| dept    | varchar(50)  | YES  |     | NULL    |       |
++---------+--------------+------+-----+---------+-------+
+7 rows in set (0.04 sec)
+
+
+Common uses of Alter Table
+--------------------------
+
+1. ADD a column.
+2. Modify an existing column(type, size, default, etc...)
+3. drop column
+4. rename a column or table
+5. add or remove constraints
+6. change column order(in some databases)
+
+Syntax
+------
+Alter Table table_name <modification>;
+
+adding a new column to existing table.
+
+syntax
+--------
+alter table table_name add column_name datatype(size);
+
+mysql> -- add a new column named location datatype tinytext to the employees table.
+mysql> alter table employees add location tinytext;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| empID    | char(5)      | YES  |     | NULL    |       |
+| fName    | varchar(100) | YES  |     | NULL    |       |
+| lName    | varchar(60)  | YES  |     | NULL    |       |
+| age      | int          | YES  |     | NULL    |       |
+| doj      | date         | YES  |     | NULL    |       |
+| address  | tinytext     | YES  |     | NULL    |       |
+| dept     | varchar(50)  | YES  |     | NULL    |       |
+| location | tinytext     | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+8 rows in set (0.00 sec)
+
+mysql> -- Add a new column after a particular column
+mysql> -- Syntax: alter table table_name add column_name datatype(size) after specified column_name
+mysql> alter table employees add PFID int after address;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| empID    | char(5)      | YES  |     | NULL    |       |
+| fName    | varchar(100) | YES  |     | NULL    |       |
+| lName    | varchar(60)  | YES  |     | NULL    |       |
+| age      | int          | YES  |     | NULL    |       |
+| doj      | date         | YES  |     | NULL    |       |
+| address  | tinytext     | YES  |     | NULL    |       |
+| PFID     | int          | YES  |     | NULL    |       |
+| dept     | varchar(50)  | YES  |     | NULL    |       |
+| location | tinytext     | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> -- Modify the fName column in employees table to varchar(50).
+mysql> alter table employees modify fName varchar(50);
+Query OK, 0 rows affected (0.17 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++----------+-------------+------+-----+---------+-------+
+| Field    | Type        | Null | Key | Default | Extra |
++----------+-------------+------+-----+---------+-------+
+| empID    | char(5)     | YES  |     | NULL    |       |
+| fName    | varchar(50) | YES  |     | NULL    |       |
+| lName    | varchar(60) | YES  |     | NULL    |       |
+| age      | int         | YES  |     | NULL    |       |
+| doj      | date        | YES  |     | NULL    |       |
+| address  | tinytext    | YES  |     | NULL    |       |
+| PFID     | int         | YES  |     | NULL    |       |
+| dept     | varchar(50) | YES  |     | NULL    |       |
+| location | tinytext    | YES  |     | NULL    |       |
++----------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> alter table employees modify lName varchar(100);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++----------+--------------+------+-----+---------+-------+
+| Field    | Type         | Null | Key | Default | Extra |
++----------+--------------+------+-----+---------+-------+
+| empID    | char(5)      | YES  |     | NULL    |       |
+| fName    | varchar(50)  | YES  |     | NULL    |       |
+| lName    | varchar(100) | YES  |     | NULL    |       |
+| age      | int          | YES  |     | NULL    |       |
+| doj      | date         | YES  |     | NULL    |       |
+| address  | tinytext     | YES  |     | NULL    |       |
+| PFID     | int          | YES  |     | NULL    |       |
+| dept     | varchar(50)  | YES  |     | NULL    |       |
+| location | tinytext     | YES  |     | NULL    |       |
++----------+--------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+mysql> -- Change column name 
+mysql> -- Syntax: alter table table_name change existing_column_name new_column_name datatype(size);
+mysql> alter table employees change fName FirstName varchar(30);
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employees change lName LastName varchar(30);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empID     | char(5)     | YES  |     | NULL    |       |
+| FirstName | varchar(30) | YES  |     | NULL    |       |
+| LastName  | varchar(30) | YES  |     | NULL    |       |
+| age       | int         | YES  |     | NULL    |       |
+| doj       | date        | YES  |     | NULL    |       |
+| address   | tinytext    | YES  |     | NULL    |       |
+| PFID      | int         | YES  |     | NULL    |       |
+| dept      | varchar(50) | YES  |     | NULL    |       |
+| location  | tinytext    | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+9 rows in set (0.00 sec)
+
+alter table employees drop column location' at line 1
+mysql> -- To Drop a column 
+mysql> -- alter table table_name drop column column_name;
+mysql> alter table employees drop column location;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table employees drop column PFID;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> desc employees;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empID     | char(5)     | YES  |     | NULL    |       |
+| FirstName | varchar(30) | YES  |     | NULL    |       |
+| LastName  | varchar(30) | YES  |     | NULL    |       |
+| age       | int         | YES  |     | NULL    |       |
+| doj       | date        | YES  |     | NULL    |       |
+| address   | tinytext    | YES  |     | NULL    |       |
+| dept      | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql> -- Change the table name
+mysql> -- Syntax: alter table existing_table_name rename to new_table_name;
+mysql> alter table codegnana_emp rename to codegnan_emp;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc codegnan_emp;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empID     | char(5)     | YES  |     | NULL    |       |
+| FirstName | varchar(30) | YES  |     | NULL    |       |
+| LastName  | varchar(30) | YES  |     | NULL    |       |
+| age       | int         | YES  |     | NULL    |       |
+| doj       | date        | YES  |     | NULL    |       |
+| address   | tinytext    | YES  |     | NULL    |       |
+| dept      | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.00 sec)
+
+mysql>
+mysql> create table company_staff;
+ERROR 4028 (HY000): A table must have at least one visible column.
+mysql> create table company_staff(
+    -> emp_id int,
+    -> age tinyint,
+    -> experience smallint,
+    -> gender char(1),
+    -> emp_name varchar(50),
+    -> address tinytext,
+    -> salary decimal(10,2),
+    -> department enum('HR', 'IT', 'Sales', 'Finance', 'Support'),
+    -> skills set('Java', 'Python', 'SQL', 'Excel', 'Communication'),
+    -> joiningDate date
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc company_staff;
++-------------+----------------------------------------------------+------+-----+---------+-------+
+| Field       | Type                                               | Null | Key | Default | Extra |
++-------------+----------------------------------------------------+------+-----+---------+-------+
+| emp_id      | int                                                | YES  |     | NULL    |       |
+| age         | tinyint                                            | YES  |     | NULL    |       |
+| experience  | smallint                                           | YES  |     | NULL    |       |
+| gender      | char(1)                                            | YES  |     | NULL    |       |
+| emp_name    | varchar(50)                                        | YES  |     | NULL    |       |
+| address     | tinytext                                           | YES  |     | NULL    |       |
+| salary      | decimal(10,2)                                      | YES  |     | NULL    |       |
+| department  | enum('HR','IT','Sales','Finance','Support')        | YES  |     | NULL    |       |
+| skills      | set('Java','Python','SQL','Excel','Communication') | YES  |     | NULL    |       |
+| joiningDate | date                                               | YES  |     | NULL    |       |
++-------------+----------------------------------------------------+------+-----+---------+-------+
+10 rows in set (0.00 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| codegnan_emp    |
+| company_staff   |
++-----------------+
+2 rows in set (0.00 sec)
+
+mysql> -- alter table table_name add column_name datatype(size);
+mysql> alter table company_staff add email varchar(50);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table company_staff add phoneNumber varchar(30);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table company_staff add bonusdecimal(10,2) after salary;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '(10,2) after salary' at line 1
+mysql> alter table company_staff add bonus decimal(10,2) after salary;
+Query OK, 0 rows affected (0.10 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- SYntax alter table table_name add column_name datatype size first;
+mysql> alter table company_name add company_name varchar(30) first;
+ERROR 1146 (42S02): Table 'pfs_4.company_name' doesn't exist
+mysql> alter table company_staff add company_name varchar(30) first;
+Query OK, 0 rows affected (0.06 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table company_staff add status varchar(20) after department;
+Query OK, 0 rows affected (0.07 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table company_staff add qualification varchar(10) after emp_name;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- Syntax for Modify: alter table table_name modify column_name datatype(size);
+mysql> alter table company_staff modify emp_name varchar(30);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table company_staff modify salary decimal(20,3);
+Query OK, 0 rows affected (0.09 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- Rename emp_name to employee_name
+mysql> alter table company_staff change emp_name employee_name;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '' at line 1
+mysql> alter table company_staff change emp_name employee_name varchar(30);
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> alter table company_staff change joiningDate date_of_joing date;
+Query OK, 0 rows affected (0.05 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- drop bonus column 
+mysql> alter  table company_staff drop column bonus;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- drop bonus phone number
+mysql> alter  table company_staff drop column phoneNumber;
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> -- Rename table company_name to staff_records
+mysql> alter table company_name rename to staff_records;
+ERROR 1146 (42S02): Table 'pfs_4.company_name' doesn't exist
+mysql> alter table company_staff rename to staff_records;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> alter table staff_records rename to company_staff;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> -- add last_updated column before joining_date
+mysql> desc company_staff;
++---------------+----------------------------------------------------+------+-----+---------+-------+
+| Field         | Type                                               | Null | Key | Default | Extra |
++---------------+----------------------------------------------------+------+-----+---------+-------+
+| company_name  | varchar(30)                                        | YES  |     | NULL    |       |
+| emp_id        | int                                                | YES  |     | NULL    |       |
+| age           | tinyint                                            | YES  |     | NULL    |       |
+| experience    | smallint                                           | YES  |     | NULL    |       |
+| gender        | char(1)                                            | YES  |     | NULL    |       |
+| employee_name | varchar(30)                                        | YES  |     | NULL    |       |
+| qualification | varchar(10)                                        | YES  |     | NULL    |       |
+| address       | tinytext                                           | YES  |     | NULL    |       |
+| salary        | decimal(20,3)                                      | YES  |     | NULL    |       |
+| department    | enum('HR','IT','Sales','Finance','Support')        | YES  |     | NULL    |       |
+| status        | varchar(20)                                        | YES  |     | NULL    |       |
+| skills        | set('Java','Python','SQL','Excel','Communication') | YES  |     | NULL    |       |
+| date_of_joing | date                                               | YES  |     | NULL    |       |
+| email         | varchar(50)                                        | YES  |     | NULL    |       |
++---------------+----------------------------------------------------+------+-----+---------+-------+
+14 rows in set (0.01 sec)
+
+
+mysql> alter table company_staff add last_updated varchar(50) after skills;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> desc company_staff;
++---------------+----------------------------------------------------+------+-----+---------+-------+
+| Field         | Type                                               | Null | Key | Default | Extra |
++---------------+----------------------------------------------------+------+-----+---------+-------+
+| company_name  | varchar(30)                                        | YES  |     | NULL    |       |
+| emp_id        | int                                                | YES  |     | NULL    |       |
+| age           | tinyint                                            | YES  |     | NULL    |       |
+| experience    | smallint                                           | YES  |     | NULL    |       |
+| gender        | char(1)                                            | YES  |     | NULL    |       |
+| employee_name | varchar(30)                                        | YES  |     | NULL    |       |
+| qualification | varchar(10)                                        | YES  |     | NULL    |       |
+| address       | tinytext                                           | YES  |     | NULL    |       |
+| salary        | decimal(20,3)                                      | YES  |     | NULL    |       |
+| department    | enum('HR','IT','Sales','Finance','Support')        | YES  |     | NULL    |       |
+| status        | varchar(20)                                        | YES  |     | NULL    |       |
+| skills        | set('Java','Python','SQL','Excel','Communication') | YES  |     | NULL    |       |
+| last_updated  | varchar(50)                                        | YES  |     | NULL    |       |
+| date_of_joing | date                                               | YES  |     | NULL    |       |
+| email         | varchar(50)                                        | YES  |     | NULL    |       |
++---------------+----------------------------------------------------+------+-----+---------+-------+
+15 rows in set (0.00 sec)
+
