@@ -37,7 +37,14 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Table Creation using SQL
 - Introduction to SQL Data Types
 
+### Day 4 – Table Creation & ALTER TABLE Operations
+- Creating Tables with Different SQL Data Types
+- Viewing Table Structure using `DESC`
+- ALTER TABLE Operations (ADD, MODIFY, CHANGE, DROP, RENAME)
+- Managing Column Positions (`FIRST` and `AFTER`)
+- Renaming Tables and Working with Table Structures
 
+  
 ## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
