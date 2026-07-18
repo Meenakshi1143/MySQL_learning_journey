@@ -44,6 +44,12 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Managing Column Positions (`FIRST` and `AFTER`)
 - Renaming Tables and Working with Table Structures
 
+### Day 5 – Data Manipulation Language (DML)
+- Introduction to DML
+- INSERT Operations (Single, Multiple, Partial & SET Syntax)
+- UPDATE Records Using Conditions
+- DELETE Records Using WHERE Clause
+- Hands-on Practice with Employee Database
   
 ## Objective
 
