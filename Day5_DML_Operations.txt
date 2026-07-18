@@ -1,0 +1,323 @@
+DATA MANUPULATION LANGUAGE(DML)
+-------------------------------
+
+1. Insert
+Syntax: insert into table_name (column_names) values (column_values);
+
+mysql> use PFS_4
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| codegnan_emp    |
+| company_staff   |
++-----------------+
+2 rows in set (0.01 sec)
+
+mysql> alter table codegnan_emp rename to employees;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| company_staff   |
+| employees       |
++-----------------+
+2 rows in set (0.00 sec)
+
+mysql> desc employees;
++-----------+-------------+------+-----+---------+-------+
+| Field     | Type        | Null | Key | Default | Extra |
++-----------+-------------+------+-----+---------+-------+
+| empID     | char(5)     | YES  |     | NULL    |       |
+| FirstName | varchar(30) | YES  |     | NULL    |       |
+| LastName  | varchar(30) | YES  |     | NULL    |       |
+| age       | int         | YES  |     | NULL    |       |
+| doj       | date        | YES  |     | NULL    |       |
+| address   | tinytext    | YES  |     | NULL    |       |
+| dept      | varchar(50) | YES  |     | NULL    |       |
++-----------+-------------+------+-----+---------+-------+
+7 rows in set (0.01 sec)
+
+mysql> insert into employees(empID, FirstName, LastName, age, doj, address, dept) values
+    -> ('E0001', 'Sri', 'Latha', 21, '2024-04-12', 'HYD', 'Python');
+Query OK, 1 row affected (0.03 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
++-------+-----------+----------+------+------------+---------+--------+
+1 row in set (0.00 sec)
+
+mysql> insert into employees(empID, FirstName, LastName, age, doj, address, dept) values
+    -> ('E0002', 'kusuma', 'Anjali', 22, '2024-08-25', 'HYD', 'Python'),
+    -> ('E0003', 'Raj', 'Kumar', 21, '2025-10-25', 'BNG', 'Sales');
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
++-------+-----------+----------+------+------------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> insert into employees(age, address, empId, LastName, doj, FirstName, dept) values
+    -> (24, 'VJY', 'E0004', 'Teja', '2020-03-30', 'Sai', 'HR');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
++-------+-----------+----------+------+------------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> insert into employees values
+    -> ('E0005', 'Jay', 'Ram', 23, '2023-07-21', 'BNG', 'Admin');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
++-------+-----------+----------+------+------------+---------+--------+
+5 rows in set (0.00 sec)
+
+mysql> insert into employees values
+    -> ('E0006', 'Mahesh', 'Babu', 24, '2025-10-11', 'PUNE', 'Dev');
+    -> ('E0007', 'Ram', 'Charan', 26, '2021-07-01', 'BNG', 'Dev');
+Query OK, 2 rows affected (0.02 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev    |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Dev    |
++-------+-----------+----------+------+------------+---------+--------+
+7 rows in set (0.00 sec)
+
+mysql> insert into employees(empID, FirstName, doj, dept) values
+    -> ('E0008', 'Ankitha', '2021-09-23', 'Java');
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev    |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Dev    |
+| E0008 | Ankitha   | NULL     | NULL | 2021-09-23 | NULL    | Java   |
++-------+-----------+----------+------+------------+---------+--------+
+8 rows in set (0.00 sec)
+
+mysql> insert into employees set
+    -> empID = 'E0009',
+    -> Firstname = 'Siva',
+    -> LastName = 'Kumar',
+    -> age = 26,
+    -> doj = '2019-11-28',
+    -> address = 'PUNE',
+    -> dept = 'Sales';
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev    |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Dev    |
+| E0008 | Ankitha   | NULL     | NULL | 2021-09-23 | NULL    | Java   |
+| E0009 | Siva      | Kumar    |   26 | 2019-11-28 | PUNE    | Sales  |
++-------+-----------+----------+------+------------+---------+--------+
+9 rows in set (0.00 sec)
+
+mysql> update employees set LastName = 'Yelley' where empID = 'E0008';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees where empID = 'E0008';
++-------+-----------+----------+------+------------+---------+------+
+| empID | FirstName | LastName | age  | doj        | address | dept |
++-------+-----------+----------+------+------------+---------+------+
+| E0008 | Ankitha   | Yelley   | NULL | 2021-09-23 | NULL    | Java |
++-------+-----------+----------+------+------------+---------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Raj       | Kumar    |   21 | 2025-10-25 | BNG     | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev    |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Dev    |
+| E0008 | Ankitha   | Yelley   | NULL | 2021-09-23 | NULL    | Java   |
+| E0009 | Siva      | Kumar    |   26 | 2019-11-28 | PUNE    | Sales  |
++-------+-----------+----------+------+------------+---------+--------+
+9 rows in set (0.00 sec)
+
+mysql> update employees set age = 23, address = 'Mumbai', FirstName = 'Jay' where empID = 'E0003';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees where empID = 'E0003';
++-------+-----------+----------+------+------------+---------+-------+
+| empID | FirstName | LastName | age  | doj        | address | dept  |
++-------+-----------+----------+------+------------+---------+-------+
+| E0003 | Jay       | Kumar    |   23 | 2025-10-25 | Mumbai  | Sales |
++-------+-----------+----------+------+------------+---------+-------+
+1 row in set (0.00 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Jay       | Kumar    |   23 | 2025-10-25 | Mumbai  | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev    |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Dev    |
+| E0008 | Ankitha   | Yelley   | NULL | 2021-09-23 | NULL    | Java   |
+| E0009 | Siva      | Kumar    |   26 | 2019-11-28 | PUNE    | Sales  |
++-------+-----------+----------+------+------------+---------+--------+
+9 rows in set (0.00 sec)
+
+mysql> update employees set age = 21, address = 'Delhi' where empID = 'E0008';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees where empID = 'E0008';
++-------+-----------+----------+------+------------+---------+------+
+| empID | FirstName | LastName | age  | doj        | address | dept |
++-------+-----------+----------+------+------------+---------+------+
+| E0008 | Ankitha   | Yelley   |   21 | 2021-09-23 | Delhi   | Java |
++-------+-----------+----------+------+------------+---------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+--------+
+| empID | FirstName | LastName | age  | doj        | address | dept   |
++-------+-----------+----------+------+------------+---------+--------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Python |
+| E0003 | Jay       | Kumar    |   23 | 2025-10-25 | Mumbai  | Sales  |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR     |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin  |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev    |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Dev    |
+| E0008 | Ankitha   | Yelley   |   21 | 2021-09-23 | Delhi   | Java   |
+| E0009 | Siva      | Kumar    |   26 | 2019-11-28 | PUNE    | Sales  |
++-------+-----------+----------+------+------------+---------+--------+
+9 rows in set (0.00 sec)
+
+mysql> update employees set dept = 'Java' where empId = 'E0002';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employees set dept = 'Finance' where empId = 'E0007';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> update employees set dept = 'DA' where empId = 'E0009';
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+---------+
+| empID | FirstName | LastName | age  | doj        | address | dept    |
++-------+-----------+----------+------+------------+---------+---------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python  |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Java    |
+| E0003 | Jay       | Kumar    |   23 | 2025-10-25 | Mumbai  | Sales   |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR      |
+| E0005 | Jay       | Ram      |   23 | 2023-07-21 | BNG     | Admin   |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev     |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Finance |
+| E0008 | Ankitha   | Yelley   |   21 | 2021-09-23 | Delhi   | Java    |
+| E0009 | Siva      | Kumar    |   26 | 2019-11-28 | PUNE    | DA      |
++-------+-----------+----------+------+------------+---------+---------+
+9 rows in set (0.00 sec)
+
+mysql> delete from employees where FirstName = 'Jay';
+Query OK, 2 rows affected (0.01 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+---------+
+| empID | FirstName | LastName | age  | doj        | address | dept    |
++-------+-----------+----------+------+------------+---------+---------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python  |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Java    |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR      |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev     |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Finance |
+| E0008 | Ankitha   | Yelley   |   21 | 2021-09-23 | Delhi   | Java    |
+| E0009 | Siva      | Kumar    |   26 | 2019-11-28 | PUNE    | DA      |
++-------+-----------+----------+------+------------+---------+---------+
+7 rows in set (0.00 sec)
+
+mysql> delete from employees where LastName = 'Kumar';
+Query OK, 1 row affected (0.02 sec)
+
+mysql> select * from employees;
++-------+-----------+----------+------+------------+---------+---------+
+| empID | FirstName | LastName | age  | doj        | address | dept    |
++-------+-----------+----------+------+------------+---------+---------+
+| E0001 | Sri       | Latha    |   21 | 2024-04-12 | HYD     | Python  |
+| E0002 | kusuma    | Anjali   |   22 | 2024-08-25 | HYD     | Java    |
+| E0004 | Sai       | Teja     |   24 | 2020-03-30 | VJY     | HR      |
+| E0006 | Mahesh    | Babu     |   24 | 2025-10-11 | PUNE    | Dev     |
+| E0007 | Ram       | Charan   |   26 | 2021-07-01 | BNG     | Finance |
+| E0008 | Ankitha   | Yelley   |   21 | 2021-09-23 | Delhi   | Java    |
++-------+-----------+----------+------+------------+---------+---------+
+6 rows in set (0.00 sec)
+
+mysql> truncate table employees;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> select * from employees;
+Empty set (0.00 sec)
+
+mysql> drop table employees;
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> select * from employees;
+ERROR 1146 (42S02): Table 'pfs_4.employees' doesn't exist
