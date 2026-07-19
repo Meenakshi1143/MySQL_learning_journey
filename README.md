@@ -51,7 +51,7 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - DELETE Records Using WHERE Clause
 - Hands-on Practice with Employee Database
 
-  ### Day 6 – AUTO_INCREMENT, Generated Columns & DCL
+### Day 6 – AUTO_INCREMENT, Generated Columns & DCL
 - AUTO_INCREMENT and PRIMARY KEY
 - Creating a Table from an Existing Table
 - Generated (Computed) Columns
