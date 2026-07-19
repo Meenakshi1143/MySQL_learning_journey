@@ -1,0 +1,203 @@
+mysql> use PFS_4
+Database changed
+mysql> create table employees(
+    -> empID int auto_increment primary key,
+    -> name varchar(20),
+    -> department varchar(30)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> desc employees;
++------------+-------------+------+-----+---------+----------------+
+| Field      | Type        | Null | Key | Default | Extra          |
++------------+-------------+------+-----+---------+----------------+
+| empID      | int         | NO   | PRI | NULL    | auto_increment |
+| name       | varchar(20) | YES  |     | NULL    |                |
+| department | varchar(30) | YES  |     | NULL    |                |
++------------+-------------+------+-----+---------+----------------+
+3 rows in set (0.02 sec)
+
+mysql> insert into employees (name, department) values
+    -> ('Meenakshi', 'IT'),
+    -> ('Indu', 'HR'),
+    -> ('Meghana', 'Finance');
+Query OK, 3 rows affected (0.01 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++-------+-----------+------------+
+| empID | name      | department |
++-------+-----------+------------+
+|     1 | Meenakshi | IT         |
+|     2 | Indu      | HR         |
+|     3 | Meghana   | Finance    |
++-------+-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> create table backupEmployees as select * from employees;
+Query OK, 3 rows affected (0.06 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| employees       |
++-----------------+
+3 rows in set (0.01 sec)
+
+mysql> desc backupEmployees;
++------------+-------------+------+-----+---------+-------+
+| Field      | Type        | Null | Key | Default | Extra |
++------------+-------------+------+-----+---------+-------+
+| empID      | int         | NO   |     | 0       |       |
+| name       | varchar(20) | YES  |     | NULL    |       |
+| department | varchar(30) | YES  |     | NULL    |       |
++------------+-------------+------+-----+---------+-------+
+3 rows in set (0.03 sec)
+
+mysql> select * from backupEmployees;
++-------+-----------+------------+
+| empID | name      | department |
++-------+-----------+------------+
+|     1 | Meenakshi | IT         |
+|     2 | Indu      | HR         |
+|     3 | Meghana   | Finance    |
++-------+-----------+------------+
+3 rows in set (0.00 sec)
+
+mysql> create table products(
+    -> productID int auto_increment primary key,
+    -> productName varchar(20),
+    -> price decimal(10,2),
+    -> quantity int,
+    -> totalAmount decimal(10,20) generated always as (price * quantity) stored
+    -> );
+ERROR 1427 (42000): For float(M,D), double(M,D) or decimal(M,D), M must be >= D (column 'totalAmount').
+mysql> create table products(
+    -> productID int auto_increment primary key,
+    -> productName varchar(20),
+    -> price decimal(10,2),
+    -> quantity int,
+    -> totalAmount decimal(10,2) generated always as (price * quantity) stored
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> insert into products(productname, price, quantity) values
+    -> ('Book', 100, 2),
+    -> ('Pens', 20, 5);
+Query OK, 2 rows affected (0.01 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+mysql> select * from products;
++-----------+-------------+--------+----------+-------------+
+| productID | productName | price  | quantity | totalAmount |
++-----------+-------------+--------+----------+-------------+
+|         1 | Book        | 100.00 |        2 |      200.00 |
+|         2 | Pens        |  20.00 |        5 |      100.00 |
++-----------+-------------+--------+----------+-------------+
+2 rows in set (0.00 sec)
+
+mysql> insert into products(productname, price, quantity) values
+    -> ('Bag', 1000, 2);
+Query OK, 1 row affected (0.01 sec)
+
+mysql> select * from products;
++-----------+-------------+---------+----------+-------------+
+| productID | productName | price   | quantity | totalAmount |
++-----------+-------------+---------+----------+-------------+
+|         1 | Book        |  100.00 |        2 |      200.00 |
+|         2 | Pens        |   20.00 |        5 |      100.00 |
+|         3 | Bag         | 1000.00 |        2 |     2000.00 |
++-----------+-------------+---------+----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> update products set price = 1599 where productID = 3;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from products;
++-----------+-------------+---------+----------+-------------+
+| productID | productName | price   | quantity | totalAmount |
++-----------+-------------+---------+----------+-------------+
+|         1 | Book        |  100.00 |        2 |      200.00 |
+|         2 | Pens        |   20.00 |        5 |      100.00 |
+|         3 | Bag         | 1599.00 |        2 |     3198.00 |
++-----------+-------------+---------+----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> update products set price = 199.99 where productId = 1;
+Query OK, 1 row affected (0.03 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from products;
++-----------+-------------+---------+----------+-------------+
+| productID | productName | price   | quantity | totalAmount |
++-----------+-------------+---------+----------+-------------+
+|         1 | Book        |  199.99 |        2 |      399.98 |
+|         2 | Pens        |   20.00 |        5 |      100.00 |
+|         3 | Bag         | 1599.00 |        2 |     3198.00 |
++-----------+-------------+---------+----------+-------------+
+3 rows in set (0.00 sec)
+
+mysql> -- DCL Commands
+
+mysql> create table student(
+    -> StdId int auto_increment primary key,
+    -> stdName varchar(20),
+    -> stdMobile varchar(10),
+    -> stdMarks int(3)
+    -> );
+Query OK, 0 rows affected, 1 warning (0.03 sec)
+
+mysql> insert into student (stdName, stdMobile, stdMarks) values
+    -> ('Vandana', '3626178921', 99), 
+    -> ('Sowmya', '8926178431', 86),
+    -> ('Puni', '9926325433', 68),
+    -> ('Anki', '9896655433', 79);
+Query OK, 4 rows affected (0.02 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from student;
++-------+---------+------------+----------+
+| StdId | stdName | stdMobile  | stdMarks |
++-------+---------+------------+----------+
+|     1 | Vandana | 3626178921 |       99 |
+|     2 | Sowmya  | 8926178431 |       86 |
+|     3 | Puni    | 9926325433 |       68 |
+|     4 | Anki    | 9896655433 |       79 |
++-------+---------+------------+----------+
+4 rows in set (0.00 sec)
+
+mysql> create user Meenakshi identified by 'Meena1143';
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> create user Meghana identified by 'Maggi1143';
+Query OK, 0 rows affected (0.03 sec)
+
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> grant select, delete on student to Meghana;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> grant all privileges on student to Meenakshi;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> revoke all privileges on student from Meenakshi;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> grant select, insert, update on student to Meenakshi;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>mysql> revoke insert, update on student from Meenakshi;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> revoke delete on student from Meghana;
+Query OK, 0 rows affected (0.02 sec)
+
+
+
+
+mysql> Terminal close -- exit!
