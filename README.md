@@ -57,6 +57,13 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Generated (Computed) Columns
 - Data Manipulation with Generated Values
 - DCL Commands (CREATE USER, GRANT & REVOKE Privileges)
+
+### Day 7 – Transaction Control Language (TCL)
+- Introduction to Transactions
+- Local and Global Transactions
+- ACID Properties
+- TCL Commands (COMMIT, ROLLBACK & SAVEPOINT)
+- Table Locking (Shared, Exclusive & Intent Locks)
   
 ## Objective
 
