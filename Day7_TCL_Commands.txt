@@ -1,0 +1,395 @@
+TCL(Transaction Control Language)
+---------------------------------
+--> The process of combining all related operations into a single unit and executing them according to the rule "Either all operation should be succeed or none should be succeed". is called transaction management.
+
+***Transaction: A transaction is considered as a single unit of work and follows the principle
+"Either all or non"
+Example: Fund Transfer.
+
+Consider a money transfer process between two accounts.
+
+1. Debit amount from the sender's account.
+2. credit amount into the receiver's account.
+
+Both operations should be executed as a single transaction.
+
+If the amount is debited from the sender's account successfully. But crediting the receiver's account fails, It may lead to the data inconsistency problems.
+
+
+There are two types of Transactions such as 
+1. Local Transactions
+--> In this local transaction, all operations of a transaction are executed in the same database
+Ex: Funds transfer from one account to anther account. where, both accounts belongs to the same account.
+
+2. Global Transactions
+--> In this global transactions, Operations of a transaction are executed on different databases.
+Ex: Funds transfer from one account to anther account. where, both accounts belongs to the different account.
+
+
+
+ACID Properties
+---------------
+1. Atomicity: All or Nothing
+--> Atomicity ensures that a transaction is completed entirely or not at all. If any operation fails, the entire transaction is rolled back.
+2. Consistency: The Database remains in a valid state
+--> Consistency ensures that the database remains in a valid state before and after a transaction.
+3. Isolation: Transaction do not interface with each other
+--> Isolation ensures that multiple transactions running at the same time do not interfere with each other.
+4. Durability: Committed changes are permanent
+--> Once a transaction is committed, the changes are permanent, even if the system crashes.
+
+
+
+
+
+TCL Commands
+------------
+1. Commit
+2. Rollback
+3. Savepoint
+
+
+
+mysql> use PFS_4
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| employees       |
+| products        |
+| student         |
++-----------------+
+5 rows in set (0.06 sec)
+
+mysql> create table employee( 
+    -> empId int primary key,
+    -> empName varchar(20),
+    -> salary decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee values(111, 'Raju', 7000);
+Query OK, 1 row affected (0.03 sec)
+
+mysql> insert into employee values(222, 'Rani', 10000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    |  7000.00 |
+|   222 | Rani    | 10000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update employee set salary = 17000 where empID = 111;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    | 17000.00 |
+|   222 | Rani    | 10000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> rollback;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    |  7000.00 |
+|   222 | Rani    | 10000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> insert into employee values(333, 'Ramu', 5000);
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    |  7000.00 |
+|   222 | Rani    | 10000.00 |
+|   333 | Ramu    |  5000.00 |
++-------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> update employee set salary = salary + 5000 where salary >= 7000;
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    | 12000.00 |
+|   222 | Rani    | 15000.00 |
+|   333 | Ramu    |  5000.00 |
++-------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> savepoint sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from employee where empId = 111;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   222 | Rani    | 15000.00 |
+|   333 | Ramu    |  5000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> rollback to sp1;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    | 12000.00 |
+|   222 | Rani    | 15000.00 |
+|   333 | Ramu    |  5000.00 |
++-------+---------+----------+
+3 rows in set (0.00 sec)
+
+mysql> delete from employee where empId = 222;
+Query OK, 1 row affected (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+----------+
+| empId | empName | salary   |
++-------+---------+----------+
+|   111 | Raju    | 12000.00 |
+|   333 | Ramu    |  5000.00 |
++-------+---------+----------+
+2 rows in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> show databases;
++--------------------+
+| Database           |
++--------------------+
+| information_schema |
+| mysql              |
+| performance_schema |
+| pfs_4              |
+| sys                |
++--------------------+
+5 rows in set (0.03 sec)
+
+*****************************************
+
+mysql> create database lock_demo;
+Query OK, 1 row affected (0.02 sec)
+
+mysql> use lock_demo;
+Database changed
+mysql> create table employee( 
+    -> empId int primary key,
+    -> empName varchar(30),
+    -> department varchar(30),
+    -> salary decimal(10,2)
+    -> );
+Query OK, 0 rows affected (0.06 sec)
+
+mysql> insert into employee values(
+    -> 111, 'Seetha', 'IT', 20000),
+    -> (112, 'Geetha', 'CSE', 45000),
+    -> (113, 'Ganesh', 'ECE', 15000);
+Query OK, 3 rows affected (0.03 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from employee;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 20000.00 |
+|   112 | Geetha  | CSE        | 45000.00 |
+|   113 | Ganesh  | ECE        | 15000.00 |
++-------+---------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> lock tables employee write;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> use lock_demo;
+Database changed
+mysql> use lock_demo;
+Database changed
+mysql> unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 20000.00 |
+|   112 | Geetha  | CSE        | 45000.00 |
+|   113 | Ganesh  | ECE        | 15000.00 |
++-------+---------+------------+----------+
+3 rows in set (54.51 sec)
+
+mysql> update employee set salary = 25000 where empId = 111;
+Query OK, 1 row affected (1 min 24.59 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> lock tables employee read;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 25000.00 |
+|   112 | Geetha  | CSE        | 45000.00 |
+|   113 | Ganesh  | ECE        | 15000.00 |
++-------+---------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> select * from employee;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 25000.00 |
+|   112 | Geetha  | CSE        | 45000.00 |
+|   113 | Ganesh  | ECE        | 15000.00 |
++-------+---------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> use lock_demo;
+Database changed
+mysql> unlock tables;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update employee set salary = 12000 where empId = 113;
+Query OK, 1 row affected (46.62 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from employee;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 25000.00 |
+|   112 | Geetha  | CSE        | 45000.00 |
+|   113 | Ganesh  | ECE        | 12000.00 |
++-------+---------+------------+----------+
+3 rows in set (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee where empID = 111 for update;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 25000.00 |
++-------+---------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> update employee set salary = 50000 where empId = 111;
+ERROR 1205 (HY000): Lock wait timeout exceeded; try restarting transaction
+mysql> update employee set salary = 30000 where empId = 112;
+Query OK, 1 row affected (0.02 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> start transaction;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> select * from employee where empID = 111 for update;
++-------+---------+------------+----------+
+| empId | empName | department | salary   |
++-------+---------+------------+----------+
+|   111 | Seetha  | IT         | 25000.00 |
++-------+---------+------------+----------+
+1 row in set (0.00 sec)
+
+mysql> commit;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> update employee set salary = 50000 where empId = 111;
+Query OK, 1 row affected (5.94 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+
+
+
+
+
+
+
+
+***What is locking
+   ---------------
+Locking is a mechanism used by the database to control concurrent access data
+
+It ensures that multiple users access the same data simultaneously the database maintains consistency, integrity, and prevent conflicts.
+
+1. Shared lock
+--> It is used to allow a transaction to read data.
+Multiple transactions can hold a shared lock on the same row.
+No transaction can modify the row until all shared locks are released.
+**Characteristics
+- Read only
+- Multiple users can read simultaneously
+- Blocks updates and deletes
+
+2. Exclusive lock
+--> It allows transaction to modify data.
+while exclusive lock exists:
+No other transaction can tread using a locking read or modify that row
+Only the transaction holding the lock can update/delete the data
+**Characteristics
+- Used for INSERT, UPDATE, DELETE
+- Only one exclusive lock at a time
+- Blocks both reads (locking reads) and writes
+
+
+3. Intent lock
+--> It is a table-level lock that indicates a transaction intends to place row level locks.
+It helps SQL quickly determine whether a table-level lock conflicts with existing row locks.
+Users do not usually create Intent locks manually. InnoDB manages them automatically.
+
+
+Real-Life example: 
+--> Imagine a library:
+Shared lock: Many students can read the same book at the same time.
+Exclusive lock: One student borrows the book, so nobody else can read or borrow it until it is returned.
+Intent lock: The librarian marks that some is about to read or borrow books from a shelf, helping coordinate access without checking every book individually.
+
+
+
+mysql> Terminal close -- exit!
+mysql> Terminal close -- exit!
+mysql> Terminal close -- exit!
+mysql> Terminal close -- exit!
