@@ -1,0 +1,212 @@
+Constraints:
+--> Constraints are rules applied to the table columns in MYSQL to ensure that only valid and accurate data as stored in the database
+
+--> Constraints = Rules that control the data entered into a table.
+
+***Why do we use Constraints:
+1. Maintain data integrity
+2. Prevent invalid data entry
+3. Avoid duplicate records
+4. Ensure relationships between tables
+5. Make the database reliable and consistent
+
+***Types of Constraints:
+1. Not NULL: Does not allow NULL values, But it allows duplicate values
+
+2. Unique: Doesn't allow duplicate values, But allow NULL values
+
+3. Primary Key: This is a combination of unique, Not NULL constraints (It does not allows duplicates and NULL values)
+
+4. Composite Key: 
+
+5. Foreign Key: Used to combine/link two tables together
+--> A foreign is a field (or collection of fields) in one table that refers to the primary key in another table
+--> The table containing the foreign key is called the child table. The table containing the candidate key is called as referenced table or parent table.
+
+6. Check: based on conditions
+
+7. Default: Takes default value
+   
+
+***Referential Actions:
+- Referential actions defines what happens to child table data when parent table data is deleted or updated.
+
+On Delete Cascade
+On Update Cascade
+
+On Delete Set NULL;
+On Update set NULL;
+
+ 
+***OPERATORS
+
+
+1. calculate total values of each product adding tax of 12 percent
+2. Discounted price by subtracting price with 5rs
+3. Total inventory value for each product
+4. Calculate price for 10 units
+5. Find products where quantity is not a multiple of 50
+
+
+
+mysql> use PFS_4
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| employee        |
+| employees       |
+| products        |
+| student         |
++-----------------+
+6 rows in set (0.03 sec)
+
+mysql> create table products(
+    -> id int,
+    -> name varchar(100)
+    -> price decimal(10,2),
+    -> qty int
+    -> );
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'price decimal(10,2),
+qty int
+)' at line 4
+mysql> create table products(
+    -> id int,
+    -> name varchar(100),
+    -> price decimal(10,2),
+    -> qty int
+    -> );
+ERROR 1050 (42S01): Table 'products' already exists
+mysql> drop table products;
+Query OK, 0 rows affected (0.06 sec)
+
+mysql>
+mysql> create table products(
+    -> id int,
+    -> name varchar(100),
+    -> price decimal(10,2),
+    -> qty int
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO Products VALUES
+    ->  (1, 'Pen', 10.00, 100),
+    ->  (2, 'Notebook', 25.00, 50),
+    ->  (3, 'Pencil', 5.00, 200),
+    ->  (4, 'Eraser', 3.00, 300),
+    ->  (5, 'Marker', 15.00, 80),
+    ->  (6, 'Scale', 20.00, 150),
+    ->  (7, 'Sharpener', 8.00, 120),
+    ->  (8, 'Geometry Box', 120.00, 40),
+    ->  (9, 'Sketch Pen', 60.00, 75),
+    ->  (10, 'Crayons', 90.00, 55);
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+
+mysql> -- 1. calculate total values of each product adding tax of 12 percent
+mysql> select id, price, (price*0.12) as price_with_tax from products;
++------+--------+----------------+
+| id   | price  | price_with_tax |
++------+--------+----------------+
+|    1 |  10.00 |         1.2000 |
+|    2 |  25.00 |         3.0000 |
+|    3 |   5.00 |         0.6000 |
+|    4 |   3.00 |         0.3600 |
+|    5 |  15.00 |         1.8000 |
+|    6 |  20.00 |         2.4000 |
+|    7 |   8.00 |         0.9600 |
+|    8 | 120.00 |        14.4000 |
+|    9 |  60.00 |         7.2000 |
+|   10 |  90.00 |        10.8000 |
++------+--------+----------------+
+10 rows in set (0.02 sec)
+
+mysql> select id, price, price + (price*0.12) as price_with_tax from products;
++------+--------+----------------+
+| id   | price  | price_with_tax |
++------+--------+----------------+
+|    1 |  10.00 |        11.2000 |
+|    2 |  25.00 |        28.0000 |
+|    3 |   5.00 |         5.6000 |
+|    4 |   3.00 |         3.3600 |
+|    5 |  15.00 |        16.8000 |
+|    6 |  20.00 |        22.4000 |
+|    7 |   8.00 |         8.9600 |
+|    8 | 120.00 |       134.4000 |
+|    9 |  60.00 |        67.2000 |
+|   10 |  90.00 |       100.8000 |
++------+--------+----------------+
+10 rows in set (0.00 sec)
+
+mysql> -- 2. Discounted price by subtracting price with 5rs
+mysql> select id, price, price - 5 as discount_of_5rs from products;
++------+--------+-----------------+
+| id   | price  | discount_of_5rs |
++------+--------+-----------------+
+|    1 |  10.00 |            5.00 |
+|    2 |  25.00 |           20.00 |
+|    3 |   5.00 |            0.00 |
+|    4 |   3.00 |           -2.00 |
+|    5 |  15.00 |           10.00 |
+|    6 |  20.00 |           15.00 |
+|    7 |   8.00 |            3.00 |
+|    8 | 120.00 |          115.00 |
+|    9 |  60.00 |           55.00 |
+|   10 |  90.00 |           85.00 |
++------+--------+-----------------+
+10 rows in set (0.02 sec)
+
+mysql> -- 3. Total inventory value for each product
+mysql> select *, price * qty as inventory_value from products;
++------+--------------+--------+------+-----------------+
+| id   | name         | price  | qty  | inventory_value |
++------+--------------+--------+------+-----------------+
+|    1 | Pen          |  10.00 |  100 |         1000.00 |
+|    2 | Notebook     |  25.00 |   50 |         1250.00 |
+|    3 | Pencil       |   5.00 |  200 |         1000.00 |
+|    4 | Eraser       |   3.00 |  300 |          900.00 |
+|    5 | Marker       |  15.00 |   80 |         1200.00 |
+|    6 | Scale        |  20.00 |  150 |         3000.00 |
+|    7 | Sharpener    |   8.00 |  120 |          960.00 |
+|    8 | Geometry Box | 120.00 |   40 |         4800.00 |
+|    9 | Sketch Pen   |  60.00 |   75 |         4500.00 |
+|   10 | Crayons      |  90.00 |   55 |         4950.00 |
++------+--------------+--------+------+-----------------+
+10 rows in set (0.00 sec)
+
+mysql> select *, inventory_value * 10 as price_per_10units from products;
+ERROR 1054 (42S22): Unknown column 'inventory_value' in 'field list'
+mysql> select *, price * qty * 10 as price_per_10units from products;
++------+--------------+--------+------+-------------------+
+| id   | name         | price  | qty  | price_per_10units |
++------+--------------+--------+------+-------------------+
+|    1 | Pen          |  10.00 |  100 |          10000.00 |
+|    2 | Notebook     |  25.00 |   50 |          12500.00 |
+|    3 | Pencil       |   5.00 |  200 |          10000.00 |
+|    4 | Eraser       |   3.00 |  300 |           9000.00 |
+|    5 | Marker       |  15.00 |   80 |          12000.00 |
+|    6 | Scale        |  20.00 |  150 |          30000.00 |
+|    7 | Sharpener    |   8.00 |  120 |           9600.00 |
+|    8 | Geometry Box | 120.00 |   40 |          48000.00 |
+|    9 | Sketch Pen   |  60.00 |   75 |          45000.00 |
+|   10 | Crayons      |  90.00 |   55 |          49500.00 |
++------+--------------+--------+------+-------------------+
+10 rows in set (0.00 sec)
+
+mysql> select name, qty from products where qty % 50 != 0;
++--------------+------+
+| name         | qty  |
++--------------+------+
+| Marker       |   80 |
+| Sharpener    |  120 |
+| Geometry Box |   40 |
+| Sketch Pen   |   75 |
+| Crayons      |   55 |
++--------------+------+
+5 rows in set (0.02 sec)
+
+mysql>
+
