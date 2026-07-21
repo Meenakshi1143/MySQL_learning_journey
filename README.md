@@ -64,7 +64,13 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - ACID Properties
 - TCL Commands (COMMIT, ROLLBACK & SAVEPOINT)
 - Table Locking (Shared, Exclusive & Intent Locks)
-  
+
+### Day 8 – Constraints & SQL Operators
+- Introduction to SQL Constraints
+- Types of Constraints (NOT NULL, UNIQUE, PRIMARY KEY, COMPOSITE KEY, FOREIGN KEY, CHECK, DEFAULT)
+- Referential Actions (ON DELETE & ON UPDATE)
+- SQL Operators and Arithmetic Expressions
+- Hands-on Practice with Product-Based SQL Queries
 ## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
