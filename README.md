@@ -71,6 +71,13 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Referential Actions (ON DELETE & ON UPDATE)
 - SQL Operators and Arithmetic Expressions
 - Hands-on Practice with Product-Based SQL Queries
+
+  ### Day 9 – SQL Operators & Conditional Queries
+- Arithmetic, Comparison, and Logical Operators
+- Conditional Filtering using WHERE Clause
+- UPDATE and DELETE Operations with Conditions
+- Employee and Student Database Practice
+- Hands-on SQL Query Implementation
 ## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
