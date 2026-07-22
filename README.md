@@ -72,7 +72,7 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - SQL Operators and Arithmetic Expressions
 - Hands-on Practice with Product-Based SQL Queries
 
-  ### Day 9 – SQL Operators & Conditional Queries
+### Day 9 – SQL Operators & Conditional Queries
 - Arithmetic, Comparison, and Logical Operators
 - Conditional Filtering using WHERE Clause
 - UPDATE and DELETE Operations with Conditions
