@@ -1,0 +1,814 @@
+mysql> use PFS_4
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| employee        |
+| employees       |
+| products        |
+| student         |
+| studentscores   |
++-----------------+
+7 rows in set (0.05 sec)
+
+mysql> CREATE TABLE Projects (
+    ->    id INT,
+    ->    name VARCHAR(100),
+    ->    assignedto VARCHAR(100),
+    ->    start DATE,
+    ->    end DATE
+    -> );
+Query OK, 0 rows affected (0.10 sec)
+
+mysql> INSERT INTO Projects VALUES
+    -> (1, 'Website Revamp', 'Alice', '2024-01-15', '2024-03-01'),
+    -> (2, 'Mobile App', 'Bob', '2024-02-01', NULL),
+    -> (3, 'Data Migration', NULL, NULL, NULL),
+    -> (4, 'SEO Optimization', 'Eve', '2024-03-10', '2024-04-20'),
+    -> (5, 'Cloud Migration', NULL, '2024-03-15', NULL);
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from Projects;
++------+------------------+------------+------------+------------+
+| id   | name             | assignedto | start      | end        |
++------+------------------+------------+------------+------------+
+|    1 | Website Revamp   | Alice      | 2024-01-15 | 2024-03-01 |
+|    2 | Mobile App       | Bob        | 2024-02-01 | NULL       |
+|    3 | Data Migration   | NULL       | NULL       | NULL       |
+|    4 | SEO Optimization | Eve        | 2024-03-10 | 2024-04-20 |
+|    5 | Cloud Migration  | NULL       | 2024-03-15 | NULL       |
++------+------------------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Projects where assignedto = 'NULL';
+Empty set (0.00 sec)
+
+mysql> select * from Projects where assignedto is NULL;
++------+-----------------+------------+------------+------+
+| id   | name            | assignedto | start      | end  |
++------+-----------------+------------+------------+------+
+|    3 | Data Migration  | NULL       | NULL       | NULL |
+|    5 | Cloud Migration | NULL       | 2024-03-15 | NULL |
++------+-----------------+------------+------------+------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Projects where start is NULL;
++------+----------------+------------+-------+------+
+| id   | name           | assignedto | start | end  |
++------+----------------+------------+-------+------+
+|    3 | Data Migration | NULL       | NULL  | NULL |
++------+----------------+------------+-------+------+
+1 row in set (0.00 sec)
+
+mysql> select * from Projects where end is not NULL;
++------+------------------+------------+------------+------------+
+| id   | name             | assignedto | start      | end        |
++------+------------------+------------+------------+------------+
+|    1 | Website Revamp   | Alice      | 2024-01-15 | 2024-03-01 |
+|    4 | SEO Optimization | Eve        | 2024-03-10 | 2024-04-20 |
++------+------------------+------------+------------+------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Projects where assignedto is not NULL;
++------+------------------+------------+------------+------------+
+| id   | name             | assignedto | start      | end        |
++------+------------------+------------+------------+------------+
+|    1 | Website Revamp   | Alice      | 2024-01-15 | 2024-03-01 |
+|    2 | Mobile App       | Bob        | 2024-02-01 | NULL       |
+|    4 | SEO Optimization | Eve        | 2024-03-10 | 2024-04-20 |
++------+------------------+------------+------------+------------+
+3 rows in set (0.00 sec)
+
+mysql> update Projects set assignedto = 'Frank' where assignedto is null;
+Query OK, 2 rows affected (0.03 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from Projects;
++------+------------------+------------+------------+------------+
+| id   | name             | assignedto | start      | end        |
++------+------------------+------------+------------+------------+
+|    1 | Website Revamp   | Alice      | 2024-01-15 | 2024-03-01 |
+|    2 | Mobile App       | Bob        | 2024-02-01 | NULL       |
+|    3 | Data Migration   | Frank      | NULL       | NULL       |
+|    4 | SEO Optimization | Eve        | 2024-03-10 | 2024-04-20 |
+|    5 | Cloud Migration  | Frank      | 2024-03-15 | NULL       |
++------+------------------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update Projects set start = '2026-07-23' where start is null;
+Query OK, 1 row affected (0.00 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from Projects;
++------+------------------+------------+------------+------------+
+| id   | name             | assignedto | start      | end        |
++------+------------------+------------+------------+------------+
+|    1 | Website Revamp   | Alice      | 2024-01-15 | 2024-03-01 |
+|    2 | Mobile App       | Bob        | 2024-02-01 | NULL       |
+|    3 | Data Migration   | Frank      | 2026-07-23 | NULL       |
+|    4 | SEO Optimization | Eve        | 2024-03-10 | 2024-04-20 |
+|    5 | Cloud Migration  | Frank      | 2024-03-15 | NULL       |
++------+------------------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> update Projects set name = 'Completed' where end is not null;
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from Projects;
++------+-----------------+------------+------------+------------+
+| id   | name            | assignedto | start      | end        |
++------+-----------------+------------+------------+------------+
+|    1 | Completed       | Alice      | 2024-01-15 | 2024-03-01 |
+|    2 | Mobile App      | Bob        | 2024-02-01 | NULL       |
+|    3 | Data Migration  | Frank      | 2026-07-23 | NULL       |
+|    4 | Completed       | Eve        | 2024-03-10 | 2024-04-20 |
+|    5 | Cloud Migration | Frank      | 2024-03-15 | NULL       |
++------+-----------------+------------+------------+------------+
+5 rows in set (0.00 sec)
+
+mysql> delete from projects where assignedto is null;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from Projects where start is null;
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> delete from Projects where name = 'Completed';   || delete from Projects where end is not null;
+Query OK, 2 rows affected (0.02 sec)
+
+mysql> select * from Projects;
++------+-----------------+------------+------------+------+
+| id   | name            | assignedto | start      | end  |
++------+-----------------+------------+------------+------+
+|    2 | Mobile App      | Bob        | 2024-02-01 | NULL |
+|    3 | Data Migration  | Frank      | 2026-07-23 | NULL |
+|    5 | Cloud Migration | Frank      | 2024-03-15 | NULL |
++------+-----------------+------------+------------+------+
+3 rows in set (0.00 sec)
+
+
+
+****Other Operators:
+MySQL offers various additional operators for specific purposes.
+1. BETWEEN: Checks if a value falls within a specific range.
+2. IN: Checks if a value is present within a list of specified values.
+3. CASE: Used for conditional expressions and assigning values based on conditions 
+
+***BETWEEN Operator
+------------------- 
+
+mysql> CREATE TABLE Orders (
+    ->  id INT,
+    ->  customer_name VARCHAR(100),
+    ->  order_date DATE,
+    ->  total_amount DECIMAL(10,2)
+    ->  );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO Orders VALUES
+    ->  (1, 'Alice', '2024-03-01', 1500.00),
+    ->  (2, 'Bob', '2024-03-05', 450.00),
+    ->  (3, 'Charlie', '2024-03-10', 2500.00),
+    ->  (4, 'Diana', '2024-03-15', 800.00),
+    ->  (5, 'Eve', '2024-03-20', 1200.00),
+    ->  (6, 'Frank', '2024-03-25', 3000.00),
+    ->  (7, 'Grace', '2024-04-02', 1800.00),
+    ->  (8, 'Henry', '2024-04-08', 950.00),
+    ->  (9, 'Ivy', '2024-04-12', 2750.00),
+    ->  (10, 'Jack', '2024-04-18', 650.00),
+    ->  (11, 'Kevin', '2024-04-22', 4200.00),
+    ->  (12, 'Lily', '2024-05-01', 1350.00),
+    ->  (13, 'Michael', '2024-05-08', 5000.00),
+    ->  (14, 'Nancy', '2024-05-15', 2250.00),
+    ->  (15, 'Oliver', '2024-05-25', 900.00);
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> select * from Orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1500.00 |
+|    2 | Bob           | 2024-03-05 |       450.00 |
+|    3 | Charlie       | 2024-03-10 |      2500.00 |
+|    4 | Diana         | 2024-03-15 |       800.00 |
+|    5 | Eve           | 2024-03-20 |      1200.00 |
+|    6 | Frank         | 2024-03-25 |      3000.00 |
+|    7 | Grace         | 2024-04-02 |      1800.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|    9 | Ivy           | 2024-04-12 |      2750.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   11 | Kevin         | 2024-04-22 |      4200.00 |
+|   12 | Lily          | 2024-05-01 |      1350.00 |
+|   13 | Michael       | 2024-05-08 |      5000.00 |
+|   14 | Nancy         | 2024-05-15 |      2250.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> select * from Oders where order_date between '2024-03-03- and '2024-03-10';
+    '> select * from Oders where order_date between '2024-03-03' and '2024-03-10';
+    '> ^C
+mysql> select * from Oders where order_date between '2024-03-03' and '2024-03-10';
+ERROR 1146 (42S02): Table 'pfs_4.oders' doesn't exist
+mysql> select * from Orders where order_date between '2024-03-03' and '2024-03-10';
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    2 | Bob           | 2024-03-05 |       450.00 |
+|    3 | Charlie       | 2024-03-10 |      2500.00 |
++------+---------------+------------+--------------+
+2 rows in set (0.00 sec)
+
+mysql> select * from Orders wher order_date between '2024-04-01' and '2024-04-30';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'order_date between '2024-04-01' and '2024-04-30'' at line 1
+mysql> select * from Orders where order_date between '2024-04-01' and '2024-04-30';
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    7 | Grace         | 2024-04-02 |      1800.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|    9 | Ivy           | 2024-04-12 |      2750.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   11 | Kevin         | 2024-04-22 |      4200.00 |
++------+---------------+------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from Orders where total_amount between 500 and 1500;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1500.00 |
+|    4 | Diana         | 2024-03-15 |       800.00 |
+|    5 | Eve           | 2024-03-20 |      1200.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   12 | Lily          | 2024-05-01 |      1350.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+7 rows in set (0.00 sec)
+
+mysql> update Orders set total_amount = total_amount + 1000 where order_date between '2024-03-04' and '2024-03-10';
+Query OK, 2 rows affected (0.02 sec)
+Rows matched: 2  Changed: 2  Warnings: 0
+
+mysql> select * from Orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1500.00 |
+|    2 | Bob           | 2024-03-05 |      1450.00 |
+|    3 | Charlie       | 2024-03-10 |      3500.00 |
+|    4 | Diana         | 2024-03-15 |       800.00 |
+|    5 | Eve           | 2024-03-20 |      1200.00 |
+|    6 | Frank         | 2024-03-25 |      3000.00 |
+|    7 | Grace         | 2024-04-02 |      1800.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|    9 | Ivy           | 2024-04-12 |      2750.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   11 | Kevin         | 2024-04-22 |      4200.00 |
+|   12 | Lily          | 2024-05-01 |      1350.00 |
+|   13 | Michael       | 2024-05-08 |      5000.00 |
+|   14 | Nancy         | 2024-05-15 |      2250.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> --Reduce total amount by 200 for orders between 1000 and 200
+    -> update Orders set total_amount = total_amount - 200 where total_amount between 1000 and 2000;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '--Reduce total amount by 200 for orders between 1000 and 200
+update Orders set t' at line 1
+mysql> -- Reduce total amount by 200 for orders between 1000 and 2000
+mysql> update Orders set total_amount = total_amount - 200 where total_amount between 1000 and 2000;
+Query OK, 5 rows affected (0.01 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from Orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1300.00 |
+|    2 | Bob           | 2024-03-05 |      1250.00 |
+|    3 | Charlie       | 2024-03-10 |      3500.00 |
+|    4 | Diana         | 2024-03-15 |       800.00 |
+|    5 | Eve           | 2024-03-20 |      1000.00 |
+|    6 | Frank         | 2024-03-25 |      3000.00 |
+|    7 | Grace         | 2024-04-02 |      1600.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|    9 | Ivy           | 2024-04-12 |      2750.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   11 | Kevin         | 2024-04-22 |      4200.00 |
+|   12 | Lily          | 2024-05-01 |      1150.00 |
+|   13 | Michael       | 2024-05-08 |      5000.00 |
+|   14 | Nancy         | 2024-05-15 |      2250.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> update Orders set total_amount = total_amount + (total_amount * 0.1) where total_amount between 2500 and 5000;
+Query OK, 5 rows affected (0.02 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from Orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1300.00 |
+|    2 | Bob           | 2024-03-05 |      1250.00 |
+|    3 | Charlie       | 2024-03-10 |      3850.00 |
+|    4 | Diana         | 2024-03-15 |       800.00 |
+|    5 | Eve           | 2024-03-20 |      1000.00 |
+|    6 | Frank         | 2024-03-25 |      3300.00 |
+|    7 | Grace         | 2024-04-02 |      1600.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|    9 | Ivy           | 2024-04-12 |      3025.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   11 | Kevin         | 2024-04-22 |      4620.00 |
+|   12 | Lily          | 2024-05-01 |      1150.00 |
+|   13 | Michael       | 2024-05-08 |      5500.00 |
+|   14 | Nancy         | 2024-05-15 |      2250.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+15 rows in set (0.00 sec)
+
+mysql> delete from Orders where order_date between '2024-03-10' and '2024-03-20';
+Query OK, 3 rows affected (0.01 sec)
+
+mysql> select * from Orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1300.00 |
+|    2 | Bob           | 2024-03-05 |      1250.00 |
+|    6 | Frank         | 2024-03-25 |      3300.00 |
+|    7 | Grace         | 2024-04-02 |      1600.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|    9 | Ivy           | 2024-04-12 |      3025.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   11 | Kevin         | 2024-04-22 |      4620.00 |
+|   12 | Lily          | 2024-05-01 |      1150.00 |
+|   13 | Michael       | 2024-05-08 |      5500.00 |
+|   14 | Nancy         | 2024-05-15 |      2250.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+12 rows in set (0.00 sec)
+
+mysql> delete from Orders where total_amount between 2500 and 5000;
+Query OK, 3 rows affected (0.02 sec)
+
+mysql> select * from Orders;
++------+---------------+------------+--------------+
+| id   | customer_name | order_date | total_amount |
++------+---------------+------------+--------------+
+|    1 | Alice         | 2024-03-01 |      1300.00 |
+|    2 | Bob           | 2024-03-05 |      1250.00 |
+|    7 | Grace         | 2024-04-02 |      1600.00 |
+|    8 | Henry         | 2024-04-08 |       950.00 |
+|   10 | Jack          | 2024-04-18 |       650.00 |
+|   12 | Lily          | 2024-05-01 |      1150.00 |
+|   13 | Michael       | 2024-05-08 |      5500.00 |
+|   14 | Nancy         | 2024-05-15 |      2250.00 |
+|   15 | Oliver        | 2024-05-25 |       900.00 |
++------+---------------+------------+--------------+
+9 rows in set (0.00 sec)
+
+
+IN Operator:
+------------ 
+This operator checks if a value exists within a specified list of values 
+
+±This retrieves customer records where the country is either 'USA', 'Canada', or 'UK'.
+
+mysql> CREATE TABLE Emp (
+    ->  id INT,
+    ->  name VARCHAR(100),
+    ->  dept VARCHAR(20),
+    ->  salary INT
+    ->  );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO Emp VALUES
+    ->  (1, 'Alice', 'HR', 35000),
+    ->  (2, 'Bob', 'IT', 50000),
+    ->  (3, 'Charlie', 'Finance', 45000),
+    ->  (4, 'Diana', 'Marketing', 40000),
+    ->  (5, 'Eve', 'IT', 55000),
+    ->  (6, 'Frank', 'Finance', 48000),
+    ->  (7, 'Grace', 'Sales', 37000),
+    ->  (8, 'Henry', 'Admin', 42000),
+    ->  (9, 'Ivy', 'HR', 39000),
+    ->  (10, 'Jack', 'Sales', 46000),
+    ->  (11, 'Kevin', 'IT', 60000),
+    ->  (12, 'Lily', 'Marketing', 41000),
+    ->  (13, 'Michael', 'Admin', 38000),
+    ->  (14, 'Nancy', 'Finance', 52000),
+    ->  (15, 'Oliver', 'HR', 43000);
+Query OK, 15 rows affected (0.03 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> select * from Emp;
++------+---------+-----------+--------+
+| id   | name    | dept      | salary |
++------+---------+-----------+--------+
+|    1 | Alice   | HR        |  35000 |
+|    2 | Bob     | IT        |  50000 |
+|    3 | Charlie | Finance   |  45000 |
+|    4 | Diana   | Marketing |  40000 |
+|    5 | Eve     | IT        |  55000 |
+|    6 | Frank   | Finance   |  48000 |
+|    7 | Grace   | Sales     |  37000 |
+|    8 | Henry   | Admin     |  42000 |
+|    9 | Ivy     | HR        |  39000 |
+|   10 | Jack    | Sales     |  46000 |
+|   11 | Kevin   | IT        |  60000 |
+|   12 | Lily    | Marketing |  41000 |
+|   13 | Michael | Admin     |  38000 |
+|   14 | Nancy   | Finance   |  52000 |
+|   15 | Oliver  | HR        |  43000 |
++------+---------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> select * from Emp where dept in('IT', 'Finance');
++------+---------+---------+--------+
+| id   | name    | dept    | salary |
++------+---------+---------+--------+
+|    2 | Bob     | IT      |  50000 |
+|    3 | Charlie | Finance |  45000 |
+|    5 | Eve     | IT      |  55000 |
+|    6 | Frank   | Finance |  48000 |
+|   11 | Kevin   | IT      |  60000 |
+|   14 | Nancy   | Finance |  52000 |
++------+---------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> update Emp set salary = salary + 2000 where dept in('HR', 'Marketing');
+Query OK, 5 rows affected (0.01 sec)
+Rows matched: 5  Changed: 5  Warnings: 0
+
+mysql> select * from Emp;
++------+---------+-----------+--------+
+| id   | name    | dept      | salary |
++------+---------+-----------+--------+
+|    1 | Alice   | HR        |  37000 |
+|    2 | Bob     | IT        |  50000 |
+|    3 | Charlie | Finance   |  45000 |
+|    4 | Diana   | Marketing |  42000 |
+|    5 | Eve     | IT        |  55000 |
+|    6 | Frank   | Finance   |  48000 |
+|    7 | Grace   | Sales     |  37000 |
+|    8 | Henry   | Admin     |  42000 |
+|    9 | Ivy     | HR        |  41000 |
+|   10 | Jack    | Sales     |  46000 |
+|   11 | Kevin   | IT        |  60000 |
+|   12 | Lily    | Marketing |  43000 |
+|   13 | Michael | Admin     |  38000 |
+|   14 | Nancy   | Finance   |  52000 |
+|   15 | Oliver  | HR        |  45000 |
++------+---------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> delete from Emp where dept in('Finance', 'Marketing');
+Query OK, 5 rows affected (0.02 sec)
+
+mysql> delete from Emp where dept in('Sales', 'IT');
+Query OK, 5 rows affected (0.00 sec)
+
+mysql> delete from Emp where dept in('Admin', 'HR');
+Query OK, 5 rows affected (0.02 sec)
+
+mysql> select * from Emp;
+Empty set (0.00 sec)
+
+
+
+Like Operator:
+--------------
+The LIKE operator is used to search for a specific pattern in a column. It is commonly used with the WHERE clause to filter records based on text patterns.
+
+% → Represents zero or more characters.
+_ → Represents exactly one character.
+
+mysql> -- Insert Records
+mysql> INSERT INTO Emp VALUES
+    ->  (1, 'Rahul', 'IT', 50000),
+    ->  (2, 'Ramesh', 'HR', 35000),
+    ->  (3, 'Karan', 'Finance', 45000),
+    ->  (4, 'Mahesh', 'Marketing', 40000),
+    ->  (5, 'Suresh', 'IT', 55000),
+    ->  (6, 'Arjun', 'Sales', 38000),
+    ->  (7, 'Manish', 'Admin', 42000),
+    ->  (8, 'Ganesh', 'Finance', 47000),
+    ->  (9, 'Naresh', 'HR', 39000),
+    ->  (10, 'Rohan', 'IT', 52000),
+    ->  (11, 'Mohan', 'Sales', 41000),
+    ->  (12, 'Kishan', 'Marketing', 43000),
+    ->  (13, 'Dinesh', 'Admin', 46000),
+    ->  (14, 'Rajesh', 'Finance', 51000),
+    ->  (15, 'Kiran', 'IT', 48000);
+Query OK, 15 rows affected (0.01 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> select * from Emp;
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  50000 |
+|    2 | Ramesh | HR        |  35000 |
+|    3 | Karan  | Finance   |  45000 |
+|    4 | Mahesh | Marketing |  40000 |
+|    5 | Suresh | IT        |  55000 |
+|    6 | Arjun  | Sales     |  38000 |
+|    7 | Manish | Admin     |  42000 |
+|    8 | Ganesh | Finance   |  47000 |
+|    9 | Naresh | HR        |  39000 |
+|   10 | Rohan  | IT        |  52000 |
+|   11 | Mohan  | Sales     |  41000 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  46000 |
+|   14 | Rajesh | Finance   |  51000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+15 rows in set (0.00 sec)
+
+mysql> -- Display Employees whose names start with 'R'
+mysql> select * from Emp where Name like 'R%';
++------+--------+---------+--------+
+| id   | name   | dept    | salary |
++------+--------+---------+--------+
+|    1 | Rahul  | IT      |  50000 |
+|    2 | Ramesh | HR      |  35000 |
+|   10 | Rohan  | IT      |  52000 |
+|   14 | Rajesh | Finance |  51000 |
++------+--------+---------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select * from Emp where Name like '%sh';
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    2 | Ramesh | HR        |  35000 |
+|    4 | Mahesh | Marketing |  40000 |
+|    5 | Suresh | IT        |  55000 |
+|    7 | Manish | Admin     |  42000 |
+|    8 | Ganesh | Finance   |  47000 |
+|    9 | Naresh | HR        |  39000 |
+|   13 | Dinesh | Admin     |  46000 |
+|   14 | Rajesh | Finance   |  51000 |
++------+--------+-----------+--------+
+8 rows in set (0.00 sec)
+
+mysql> -- Display Employees whose names contain 'ar'
+mysql> select * from Emp where Name like '%ar%';
++------+--------+---------+--------+
+| id   | name   | dept    | salary |
++------+--------+---------+--------+
+|    3 | Karan  | Finance |  45000 |
+|    6 | Arjun  | Sales   |  38000 |
+|    9 | Naresh | HR      |  39000 |
++------+--------+---------+--------+
+3 rows in set (0.00 sec)
+
+mysql> select * from Emp where Name like '_____';
++------+-------+---------+--------+
+| id   | name  | dept    | salary |
++------+-------+---------+--------+
+|    1 | Rahul | IT      |  50000 |
+|    3 | Karan | Finance |  45000 |
+|    6 | Arjun | Sales   |  38000 |
+|   10 | Rohan | IT      |  52000 |
+|   11 | Mohan | Sales   |  41000 |
+|   15 | Kiran | IT      |  48000 |
++------+-------+---------+--------+
+6 rows in set (0.00 sec)
+
+mysql> select * from Emp where Name like 'k%n';
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    3 | Karan  | Finance   |  45000 |
+|   12 | Kishan | Marketing |  43000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+3 rows in set (0.00 sec)
+
+mysql> -- Display Employees whose names start with 'M' and contain 'E'
+mysql> select * from Emp where Name like 'M%E%';
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    4 | Mahesh | Marketing |  40000 |
++------+--------+-----------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from Emp where Name like '_____H';
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    2 | Ramesh | HR        |  35000 |
+|    4 | Mahesh | Marketing |  40000 |
+|    5 | Suresh | IT        |  55000 |
+|    7 | Manish | Admin     |  42000 |
+|    8 | Ganesh | Finance   |  47000 |
+|    9 | Naresh | HR        |  39000 |
+|   13 | Dinesh | Admin     |  46000 |
+|   14 | Rajesh | Finance   |  51000 |
++------+--------+-----------+--------+
+8 rows in set (0.00 sec)
+
+mysql> select * from Emp where Name like 'AEIOU';
+Empty set (0.00 sec)
+
+mysql> select * from Emp where Name like 'A%' or name like 'E%' or name like 'I%' or name like 'O%' or name like 'U%';
++------+-------+-------+--------+
+| id   | name  | dept  | salary |
++------+-------+-------+--------+
+|    6 | Arjun | Sales |  38000 |
++------+-------+-------+--------+
+1 row in set (0.00 sec)
+
+mysql> select * from Emp where Name like '%A' or name like '%E' or name like '%I' or name like '%O' or name like '%U';
+Empty set (0.00 sec)
+
+mysql> select * from Emp where Name like 'A%' or 'E%' or 'I%' or 'O%' or 'U%';
++------+-------+-------+--------+
+| id   | name  | dept  | salary |
++------+-------+-------+--------+
+|    6 | Arjun | Sales |  38000 |
++------+-------+-------+--------+
+1 row in set, 4 warnings (0.00 sec)
+
+mysql> select * from Emp where Name not like 'A%' or 'E%' or 'I%' or 'O%' or 'U%';
++------+--------+-----------+--------+
+| id   | name   | dept      | salary |
++------+--------+-----------+--------+
+|    1 | Rahul  | IT        |  50000 |
+|    2 | Ramesh | HR        |  35000 |
+|    3 | Karan  | Finance   |  45000 |
+|    4 | Mahesh | Marketing |  40000 |
+|    5 | Suresh | IT        |  55000 |
+|    7 | Manish | Admin     |  42000 |
+|    8 | Ganesh | Finance   |  47000 |
+|    9 | Naresh | HR        |  39000 |
+|   10 | Rohan  | IT        |  52000 |
+|   11 | Mohan  | Sales     |  41000 |
+|   12 | Kishan | Marketing |  43000 |
+|   13 | Dinesh | Admin     |  46000 |
+|   14 | Rajesh | Finance   |  51000 |
+|   15 | Kiran  | IT        |  48000 |
++------+--------+-----------+--------+
+14 rows in set, 4 warnings (0.00 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| emp             |
+| employee        |
+| employees       |
+| orders          |
+| products        |
+| projects        |
+| student         |
+| studentscores   |
++-----------------+
+10 rows in set (0.00 sec)
+
+mysql> drop table employees;
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| emp             |
+| employee        |
+| orders          |
+| products        |
+| projects        |
+| student         |
+| studentscores   |
++-----------------+
+9 rows in set (0.00 sec)
+
+***Case operator:
+-----------------
+The CASE expression is used to implement conditional logic in SQL. It evaluates conditions one by one and returns the corresponding result when a condition is satisfied.
+
+It works similarly to the if-elif-else statement in programming languages.
+Syntax:
+SELECT column_name,
+CASE
+    WHEN condition1 THEN result1
+    WHEN condition2 THEN result2
+    ELSE result
+END AS alias_name
+FROM table_name;
+
+
+mysql> CREATE TABLE employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(50),
+    ->     department VARCHAR(30),
+    ->     salary DECIMAL(10,2),
+    ->     experience INT,
+    ->     age INT
+    -> );
+Query OK, 0 rows affected (0.05 sec)
+
+mysql> INSERT INTO employees VALUES
+    -> (101,'Ravi','IT',65000,5,28),
+    -> (102,'Priya','HR',45000,2,24),
+    -> (103,'Amit','Finance',75000,8,35),
+    -> (104,'Sneha','IT',55000,3,27),
+    -> (105,'Rahul','Sales',40000,1,22),
+    -> (106,'Kiran','Finance',90000,12,40),
+    -> (107,'Anjali','HR',52000,4,29),
+    -> (108,'Suresh','Sales',68000,7,33);
+Query OK, 8 rows affected (0.02 sec)
+Records: 8  Duplicates: 0  Warnings: 0
+
+mysql> select * from employees;
++--------+----------+------------+----------+------------+------+
+| emp_id | emp_name | department | salary   | experience | age  |
++--------+----------+------------+----------+------------+------+
+|    101 | Ravi     | IT         | 65000.00 |          5 |   28 |
+|    102 | Priya    | HR         | 45000.00 |          2 |   24 |
+|    103 | Amit     | Finance    | 75000.00 |          8 |   35 |
+|    104 | Sneha    | IT         | 55000.00 |          3 |   27 |
+|    105 | Rahul    | Sales      | 40000.00 |          1 |   22 |
+|    106 | Kiran    | Finance    | 90000.00 |         12 |   40 |
+|    107 | Anjali   | HR         | 52000.00 |          4 |   29 |
+|    108 | Suresh   | Sales      | 68000.00 |          7 |   33 |
++--------+----------+------------+----------+------------+------+
+8 rows in set (0.00 sec)
+
+mysql> select emp_name, salary,
+    -> case
+    -> when salary >= 80000 then 'High Salary'
+    -> when salary >= 60000 then 'Medium Salary'
+    -> else 'Low Salary'
+    -> end as salary_category from Employees;
++----------+----------+-----------------+
+| emp_name | salary   | salary_category |
++----------+----------+-----------------+
+| Ravi     | 65000.00 | Medium Salary   |
+| Priya    | 45000.00 | Low Salary      |
+| Amit     | 75000.00 | Medium Salary   |
+| Sneha    | 55000.00 | Low Salary      |
+| Rahul    | 40000.00 | Low Salary      |
+| Kiran    | 90000.00 | High Salary     |
+| Anjali   | 52000.00 | Low Salary      |
+| Suresh   | 68000.00 | Medium Salary   |
++----------+----------+-----------------+
+8 rows in set (0.00 sec)
+
+mysql> -- >= 10 Expert, >= 5 Senior, >= 2 junior, else fresher
+mysql> select emp_name, experience,
+    -> case
+    -> when experience >= 10 then 'Expert'
+    -> when experience >= 5 then 'Senoir'
+    -> when experience >= 2 then 'Junior'
+    -> else 'Fresher'
+    -> end as experience_category from Employees;
++----------+------------+---------------------+
+| emp_name | experience | experience_category |
++----------+------------+---------------------+
+| Ravi     |          5 | Senoir              |
+| Priya    |          2 | Junior              |
+| Amit     |          8 | Senoir              |
+| Sneha    |          3 | Junior              |
+| Rahul    |          1 | Fresher             |
+| Kiran    |         12 | Expert              |
+| Anjali   |          4 | Junior              |
+| Suresh   |          7 | Senoir              |
++----------+------------+---------------------+
+8 rows in set (0.00 sec)
+
+mmysql> select emp_name, age,
+    -> case
+    -> when age >= 18 then 'Eligible to vote'
+    -> else 'Not Eligible to vote'
+    -> end as eligiblity_check from Employees;
++----------+------+------------------+
+| emp_name | age  | eligiblity_check |
++----------+------+------------------+
+| Ravi     |   28 | Eligible to vote |
+| Priya    |   24 | Eligible to vote |
+| Amit     |   35 | Eligible to vote |
+| Sneha    |   27 | Eligible to vote |
+| Rahul    |   22 | Eligible to vote |
+| Kiran    |   40 | Eligible to vote |
+| Anjali   |   29 | Eligible to vote |
+| Suresh   |   33 | Eligible to vote |
++----------+------+------------------+
+8 rows in set (0.00 sec)
+
+mysql> Terminal close -- exit!
