@@ -78,6 +78,17 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - UPDATE and DELETE Operations with Conditions
 - Employee and Student Database Practice
 - Hands-on SQL Query Implementation
+
+### Day 10 – SQL Operators & CASE Expression
+- NULL Handling (IS NULL & IS NOT NULL)
+- BETWEEN Operator
+- IN Operator
+- LIKE Operator with Pattern Matching
+- UPDATE and DELETE using Conditional Queries
+- CASE Expression for Conditional Output
+- Hands-on Practice with Projects, Orders, and Employee Tables
+
+  
 ## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
