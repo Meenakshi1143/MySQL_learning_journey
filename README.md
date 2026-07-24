@@ -88,6 +88,13 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - CASE Expression for Conditional Output
 - Hands-on Practice with Projects, Orders, and Employee Tables
 
+### Day 11 – Aggregate Functions & SQL Clauses
+- Aggregate Functions (COUNT, SUM, AVG, MIN, MAX)
+- Built-in Functions (CURDATE, CURTIME, NOW, DATABASE, USER, VERSION, UTC Functions)
+- SQL Clauses (WHERE, GROUP BY, HAVING, ORDER BY, LIMIT)
+- Filtering, Grouping, Sorting, and Aggregating Data
+- Hands-on Practice with Student and Employee Databases
+
   
 ## Objective
 
