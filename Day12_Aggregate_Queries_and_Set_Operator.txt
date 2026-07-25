@@ -1,0 +1,452 @@
+mysql> use PFS_4
+Database changed
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| emp             |
+| employee        |
+| employees       |
+| orders          |
+| products        |
+| projects        |
+| student         |
+| students        |
+| studentscores   |
++-----------------+
+11 rows in set (0.04 sec)
+
+mysql> CREATE TABLE sales (
+    ->    sale_id INT PRIMARY KEY,
+    ->    product VARCHAR(50),
+    ->    category VARCHAR(50),
+    ->    units_sold INT,
+    ->    unit_price INT,
+    ->    region VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.08 sec)
+
+mysql> INSERT INTO sales (sale_id, product, category, units_sold, unit_price, region) VALUES
+    -> (1,  'Keyboard',    'Electronics', 10, 1200,  'North'),
+    -> (2,  'Monitor',     'Electronics', 5,  7000,  'South'),
+    -> (3,  'Chair',       'Furniture',   15, 2500,  'North'),
+    -> (4,  'Desk',        'Furniture',   7,  4500,  'West'),
+    -> (5,  'Mouse',       'Electronics', 20, 800,   'East'),
+    -> (6,  'Sofa',        'Furniture',   3,  15000, 'South'),
+    -> (7,  'Headphones',  'Electronics', 8,  1800,  'North'),
+    -> (8,  'Laptop',      'Electronics', 6,  55000, 'West'),
+    -> (9,  'Table',       'Furniture',   12, 6000,  'East'),
+    -> (10, 'Fan',         'HomeAppliance', 18, 3000, 'South'),
+    -> (11, 'AC',          'HomeAppliance', 4, 35000, 'North'),
+    -> (12, 'Cupboard',    'Furniture',   5, 12000, 'West'),
+    -> (13, 'Printer',     'Electronics', 9, 9000,  'East'),
+    -> (14, 'Bed',         'Furniture',   2, 25000, 'South'),
+    -> (15, 'Mobile',      'Electronics', 14, 20000, 'North');
+Query OK, 15 rows affected (0.03 sec)
+Records: 15  Duplicates: 0  Warnings: 0
+
+mysql> select * from sales;
++---------+------------+---------------+------------+------------+--------+
+| sale_id | product    | category      | units_sold | unit_price | region |
++---------+------------+---------------+------------+------------+--------+
+|       1 | Keyboard   | Electronics   |         10 |       1200 | North  |
+|       2 | Monitor    | Electronics   |          5 |       7000 | South  |
+|       3 | Chair      | Furniture     |         15 |       2500 | North  |
+|       4 | Desk       | Furniture     |          7 |       4500 | West   |
+|       5 | Mouse      | Electronics   |         20 |        800 | East   |
+|       6 | Sofa       | Furniture     |          3 |      15000 | South  |
+|       7 | Headphones | Electronics   |          8 |       1800 | North  |
+|       8 | Laptop     | Electronics   |          6 |      55000 | West   |
+|       9 | Table      | Furniture     |         12 |       6000 | East   |
+|      10 | Fan        | HomeAppliance |         18 |       3000 | South  |
+|      11 | AC         | HomeAppliance |          4 |      35000 | North  |
+|      12 | Cupboard   | Furniture     |          5 |      12000 | West   |
+|      13 | Printer    | Electronics   |          9 |       9000 | East   |
+|      14 | Bed        | Furniture     |          2 |      25000 | South  |
+|      15 | Mobile     | Electronics   |         14 |      20000 | North  |
++---------+------------+---------------+------------+------------+--------+
+15 rows in set (0.00 sec)
+
+mysql> -- Total units sold per category where total units > 20
+mysql> select category, sum(units_sold) as total_units_sold from sales group by category having total_units_sold > 20;
++---------------+------------------+
+| category      | total_units_sold |
++---------------+------------------+
+| Electronics   |               72 |
+| Furniture     |               44 |
+| HomeAppliance |               22 |
++---------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Total revnue per region where revenue > 50000
+mysql> select region, sum(unit_price * units_sold) as total_revenue from sales group by region having total_revenue > 50000;
++--------+---------------+
+| region | total_revenue |
++--------+---------------+
+| North  |        483900 |
+| South  |        184000 |
+| West   |        421500 |
+| East   |        169000 |
++--------+---------------+
+4 rows in set (0.02 sec)
+
+mysql> -- count products per category with more than 2 products
+mysql> select category, count(product) as Products_count from sales group by category having Products_count > 2;
++-------------+----------------+
+| category    | Products_count |
++-------------+----------------+
+| Electronics |              7 |
+| Furniture   |              6 |
++-------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> -- Avg unit price per category < 5000
+mysql> select category, avg(unit_price) as avg_unit_price from sales group by category having avg_unit_price < 5000;
+Empty set (0.00 sec)
+
+mysql> -- Regions with more than 1 electronics product
+mysql> select region, count(product) as electronics_count from sales where category = 'electronics' group by region having electronics_count > 1;
++--------+-------------------+
+| region | electronics_count |
++--------+-------------------+
+| North  |                 3 |
+| East   |                 2 |
++--------+-------------------+
+2 rows in set (0.00 sec)
+
+mysql> -- Categories and total units sold, ordered descending 
+mysql> select category, sum(units_sold) as total_units_sold from sales group by category order by total_units_sold desc;
++---------------+------------------+
+| category      | total_units_sold |
++---------------+------------------+
+| Electronics   |               72 |
+| Furniture     |               44 |
+| HomeAppliance |               22 |
++---------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Avg unit price per region, ordered alphabetically
+mysql> select region, avg(unit_price) as avg_price from sales group by region order by region;
++--------+------------+
+| region | avg_price  |
++--------+------------+
+| East   |  5266.6667 |
+| North  | 12100.0000 |
+| South  | 12500.0000 |
+| West   | 23833.3333 |
++--------+------------+
+4 rows in set (0.00 sec)
+
+mysql> -- Total revenue per category, highest first
+mysql> select category, sum(units_sold * unit_price) as total_revenue from sales group by category order by total_revenue desc;
++---------------+---------------+
+| category      | total_revenue |
++---------------+---------------+
+| Electronics   |        768400 |
+| Furniture     |        296000 |
+| HomeAppliance |        194000 |
++---------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Count of products in each region , descending
+mysql> select region, count(product) as products_count from sales group by region order by products_count desc;
++--------+----------------+
+| region | products_count |
++--------+----------------+
+| North  |              5 |
+| South  |              4 |
+| West   |              3 |
+| East   |              3 |
++--------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> -- Region and total units sold, sorted by region
+mysql> select region, sum(units_sold) as total_units_sold from sales group by region order by region;
++--------+------------------+
+| region | total_units_sold |
++--------+------------------+
+| East   |               41 |
+| North  |               51 |
+| South  |               28 |
+| West   |               18 |
++--------+------------------+
+4 rows in set (0.00 sec)
+
+mysql> -- Total revenue per region > 20000, order by revenue desc
+mysql> select region, sum(units_sold * unit_price) as revenue from sales group by region having revenue > 20000 order by revenue desc;
++--------+---------+
+| region | revenue |
++--------+---------+
+| North  |  483900 |
+| West   |  421500 |
+| South  |  184000 |
+| East   |  169000 |
++--------+---------+
+4 rows in set (0.00 sec)
+
+mysql> -- Total units sold per category > 10, order by category
+mysql> select category, sum(units_sold) as total_units_sold from sales group by category having total_units_sold > 10 order by category;
++---------------+------------------+
+| category      | total_units_sold |
++---------------+------------------+
+| Electronics   |               72 |
+| Furniture     |               44 |
+| HomeAppliance |               22 |
++---------------+------------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Count of products per region > 1, order alphabetically
+mysql> select region, count(product) as products_count from sales group by region having products_count > 1 order by region;
++--------+----------------+
+| region | products_count |
++--------+----------------+
+| East   |              3 |
+| North  |              5 |
+| South  |              4 |
+| West   |              3 |
++--------+----------------+
+4 rows in set (0.00 sec)
+
+mysql> -- Categories where avg price < 6000, order by avg price
+mysql> select category, avg(unit_price) as avg_price from sales group by category having avg_price < 6000 order by avg_price;
+Empty set (0.00 sec)
+
+mysql> -- Avg units sold per category > 5, order by avg desc
+mysql> select category, avg(units_sold) as avg_units_sold from sales group by category having avg_units_sold > 5 order by avg_units_sold desc;
++---------------+----------------+
+| category      | avg_units_sold |
++---------------+----------------+
+| HomeAppliance |        11.0000 |
+| Electronics   |        10.2857 |
+| Furniture     |         7.3333 |
++---------------+----------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Display the total units sold for each region considering only electronics products. show only regions where total units sold are greater than 15 and display the results in desc
+mysql> select region, sum(units_sold) as total_units_sold from sales where category = 'electronics' group by region having total_units_sold > 15 order by total_units_sold desc;
++--------+------------------+
+| region | total_units_sold |
++--------+------------------+
+| North  |               32 |
+| East   |               29 |
++--------+------------------+
+2 rows in set (0.00 sec)
+
+mysql> -- Display the total revenue generated by each category considering only products whose unit price is greater than2000. show only categories with revenue greater than 100000 and order by revenue in desc
+mysql> select category, sum(units_sold * unit_price) as total_revenue from sales where unit_price > 2000 group by category having total_revenue > 100000 order by total_revenue desc;
++---------------+---------------+
+| category      | total_revenue |
++---------------+---------------+
+| Electronics   |        726000 |
+| Furniture     |        296000 |
+| HomeAppliance |        194000 |
++---------------+---------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Display the avg unit price of each region considering only products where units sold are >= 5. Show only regions where the avg price is greater than 5000 and order the results alphabetically
+mysql> select region, avg(unit_price) as avg_price from sales where units_sold >= 5 group by region having avg_price > 50000 order by region;
+Empty set (0.00 sec)
+
+mysql> select region, avg(unit_price) as avg_price from sales where units_sold >= 5 group by region having avg_price > 5000 order by region;
++--------+------------+
+| region | avg_price  |
++--------+------------+
+| East   |  5266.6667 |
+| North  |  6375.0000 |
+| West   | 23833.3333 |
++--------+------------+
+3 rows in set (0.00 sec)
+
+mysql> -- Display the count of products in each category considering only products sold in the north and south regions. Show only categories having more than 2 products and sort the count in desc
+mysql> select category, count(product) as products_count from sales where region in ('North', 'South') group by category having  products_count > 2 order by products_count desc;
++-------------+----------------+
+| category    | products_count |
++-------------+----------------+
+| Electronics |              4 |
+| Furniture   |              3 |
++-------------+----------------+
+2 rows in set (0.00 sec)
+
+mysql> -- Display the total revenue generated in each region considering only products whose unit price is less than 10000. Show  only regions having revenue greater than 50000 and display the results in descending order of revenue 
+mysql> select region, sum(units_sold * unit_price) as revenue from sales where unit_price < 10000 group by region having revenue > 50000 order by revenue desc;
++--------+---------+
+| region | revenue |
++--------+---------+
+| East   |  169000 |
+| South  |   89000 |
+| North  |   63900 |
++--------+---------+
+3 rows in set (0.00 sec)
+
+
+***SET OPERATORS 
+----------------
+1. Union: Combines results from two queries and remove duplicate rows. Columns must have the same number and type
+2. Union All: Combines results from two queries and Including duplicate. Columns must have the same number and type
+3. Intersect: Return rows that are common to both queries. Columns must have the same number and type. 
+	Note: MySQL doesn't support intersect directly
+4. Minus: Return rows from the first query that are not present in the second query columns must have the same number and type
+	Note: MySQL doesn't support Minus directly
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+mysql> show tables;
++-----------------+
+| Tables_in_pfs_4 |
++-----------------+
+| backupemployees |
+| company_staff   |
+| emp             |
+| employee        |
+| employees       |
+| orders          |
+| products        |
+| projects        |
+| sales           |
+| student         |
+| students        |
+| studentscores   |
++-----------------+
+12 rows in set (0.04 sec)
+
+mysql> drop table students;
+Query OK, 0 rows affected (0.07 sec)
+
+mysql> CREATE TABLE Students (
+    ->     student_id INT PRIMARY KEY,
+    ->     student_name VARCHAR(50),
+    ->     course VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> 
+mysql> INSERT INTO Students VALUES
+    -> (101,'Rahul','Java Full Stack'),
+    -> (102,'Priya','Python Full Stack'),
+    -> (103,'Kiran','Data Science'),
+    -> (104,'Sneha','Java Full Stack'),
+    -> (105,'Ajay','Testing');
+Query OK, 5 rows affected (0.01 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> CREATE TABLE Placed_Students (
+    ->     student_id INT PRIMARY KEY,
+    ->     student_name VARCHAR(50),
+    ->     company_name VARCHAR(50)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Placed_Students VALUES
+    -> (103,'Kiran','TCS'),
+    -> (104,'Sneha','Infosys'),
+    -> (105,'Ajay','Wipro'),
+    -> (106,'Pooja','Accenture'),
+    -> (107,'Ramesh','Capgemini');
+Query OK, 5 rows affected (0.03 sec)
+Records: 5  Duplicates: 0  Warnings: 0
+
+mysql> select * from students;
++------------+--------------+-------------------+
+| student_id | student_name | course            |
++------------+--------------+-------------------+
+|        101 | Rahul        | Java Full Stack   |
+|        102 | Priya        | Python Full Stack |
+|        103 | Kiran        | Data Science      |
+|        104 | Sneha        | Java Full Stack   |
+|        105 | Ajay         | Testing           |
++------------+--------------+-------------------+
+5 rows in set (0.00 sec)
+
+mysql> select * from placed_students;
++------------+--------------+--------------+
+| student_id | student_name | company_name |
++------------+--------------+--------------+
+|        103 | Kiran        | TCS          |
+|        104 | Sneha        | Infosys      |
+|        105 | Ajay         | Wipro        |
+|        106 | Pooja        | Accenture    |
+|        107 | Ramesh       | Capgemini    |
++------------+--------------+--------------+
+5 rows in set (0.00 sec)
+
+mysql> -- Using Union
+mysql> select student_id from students UNION select student_id from placed_students;
++------------+
+| student_id |
++------------+
+|        101 |
+|        102 |
+|        103 |
+|        104 |
+|        105 |
+|        106 |
+|        107 |
++------------+
+7 rows in set (0.00 sec)
+
+mysql> select student_id, student_name from students UNION select student_id, student_name from placed_students;
++------------+--------------+
+| student_id | student_name |
++------------+--------------+
+|        101 | Rahul        |
+|        102 | Priya        |
+|        103 | Kiran        |
+|        104 | Sneha        |
+|        105 | Ajay         |
+|        106 | Pooja        |
+|        107 | Ramesh       |
++------------+--------------+
+7 rows in set (0.00 sec)
+
+mysql> select student_id, student_name from students UNION ALL select student_id, student_name from placed_students;
++------------+--------------+
+| student_id | student_name |
++------------+--------------+
+|        101 | Rahul        |
+|        102 | Priya        |
+|        103 | Kiran        |
+|        104 | Sneha        |
+|        105 | Ajay         |
+|        103 | Kiran        |
+|        104 | Sneha        |
+|        105 | Ajay         |
+|        106 | Pooja        |
+|        107 | Ramesh       |
++------------+--------------+
+10 rows in set (0.00 sec)
+
+mysql> select student_id from students UNION ALL select student_id from placed_students;
++------------+
+| student_id |
++------------+
+|        101 |
+|        102 |
+|        103 |
+|        104 |
+|        105 |
+|        103 |
+|        104 |
+|        105 |
+|        106 |
+|        107 |
++------------+
+10 rows in set (0.00 sec)
+
+mysql> Terminal close -- exit!
