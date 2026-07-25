@@ -95,6 +95,14 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Filtering, Grouping, Sorting, and Aggregating Data
 - Hands-on Practice with Student and Employee Databases
 
+### Day 12 – Aggregate Queries & Set Operators
+- Advanced Aggregate Function Practice
+- GROUP BY, HAVING, WHERE, ORDER BY, and LIMIT
+- Revenue, Average, Count, and Total Calculations
+- Conditional Aggregate Queries using Sales Data
+- Set Operators: UNION and UNION ALL
+- Hands-on Practice with Sales and Student Databases
+
   
 ## Objective
 
