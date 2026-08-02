@@ -103,6 +103,17 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Set Operators: UNION and UNION ALL
 - Hands-on Practice with Sales and Student Databases
 
+### Day 13 – MySQL Numeric & String Functions
+
+- Numeric Functions (ABS, CEIL, FLOOR, ROUND, MOD, POW, SQRT, LOG, RAND, PI)
+- Conversion Functions (RADIANS, DEGREES, OCT, BIN)
+- Utility Functions (SIGN, GREATEST, LEAST, TRUNCATE, BIT_COUNT)
+- String Functions (CONCAT, CONCAT_WS, UPPER, LOWER, LENGTH, CHAR_LENGTH)
+- Text Manipulation (SUBSTRING, REPLACE, TRIM, LEFT, RIGHT, REVERSE)
+- Padding Functions (LPAD, RPAD)
+- Search & Extraction Functions (POSITION, ASCII, SUBSTRING_INDEX)
+- Hands-on Practice with Employee Dataset
+
   
 ## Objective
 
