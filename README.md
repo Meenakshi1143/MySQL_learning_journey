@@ -114,7 +114,18 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Search & Extraction Functions (POSITION, ASCII, SUBSTRING_INDEX)
 - Hands-on Practice with Employee Dataset
 
-  
+### Day 14 – MySQL Date & Time Functions
+
+- Current Date and Time Functions
+- Date Extraction Functions
+- Date Arithmetic (DATE_ADD, DATE_SUB)
+- DATEDIFF and Date Calculations
+- Date Formatting Functions
+- Month, Week, Quarter Functions
+- Time Conversion Functions
+- Hands-on Practice with Employee Attendance Dataset
+
+
 ## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
