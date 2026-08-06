@@ -125,6 +125,20 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Time Conversion Functions
 - Hands-on Practice with Employee Attendance Dataset
 
+### Day 15 – MySQL Joins & Views
+
+- Introduction to Joins and their importance in relational databases
+- Inner Join for matching records between tables
+- Left Join to retrieve all records from the left table
+- Right Join to retrieve all records from the right table
+- Full Join using UNION
+- Cross Join for generating combinations of records
+- Self Join for comparing data within the same table
+- Creating Views for simplified data access
+- Updating and Managing Views
+- Dropping Views when no longer needed
+- Hands-on Practice with Employees, Departments, and Projects tables
+
 
 ## Objective
 
