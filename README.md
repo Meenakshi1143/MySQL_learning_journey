@@ -139,6 +139,15 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Dropping Views when no longer needed
 - Hands-on Practice with Employees, Departments, and Projects tables
 
+### Day 16 – MySQL Subqueries
+
+- Introduction to Subqueries
+- Single-Row & Multi-Row Subqueries
+- ANY, SOME, ALL Operators
+- Nested Subqueries
+- Correlated Subqueries
+- EXISTS & NOT EXISTS
+- Practice with Employee and World Database
 
 ## Objective
 
