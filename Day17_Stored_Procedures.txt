@@ -1,0 +1,189 @@
+Stored Procedures
+==================
+A Stored Procedure is a named, precompiled collection of one or more SQL statements that are stored inside the database and can be executed(called) whenever required. Instead of sending long block of SQL from am application every time, the application simply called by the procedure name.
+
+Stored Procedures behaves like functions or subroutines in programming language, they can accept parameters, preform logic()loops, conditions, variable declarations) and returns results.
+
+Why we use Stored Procedure..??
+--------------------------------
+Performance :- Precompiled and cached by database engine, so repeated execution is faster than sending raw SQL each time.
+Reusability :- Write the logic once, call it from many applications or scripts.
+Security :- Users can be granted execute permission on procedure without granting direct access to underlying tables
+Reduced network traffic :- A single call statement replaces many lines of SQL sent over the network
+Maintainability :- Business logic is centralized in the database, so changes made are in one place.
+Consistency :- Ensures the same validation/business rules are applied every time, regardless of which application calls it.
+
+Advantages:-
+------------
+- Faster execution after compilation 
+- Reduced duplicate SQL
+- Supports transactions, loops, conditions, variables, cursors, and exception handling
+- Easy maintenance 
+
+Disadvantages:-
+---------------
+- Debugging can be difficult
+- Vendor-specific syntax
+- Complex procedures may become hard to maintain
+
+SYNTAX:-
+--------
+
+DELIMITER//
+
+CREATE PROCEDURE procedure_name([IN | OUT | INOUT] parameter_name DATA_TYPE,....)
+
+BEGIN
+------------
+------------
+------------
+------------
+logic
+------------
+------------
+
+END//
+
+CALL procedure_name;
+
+DELIMITER;
+
+mysql> drop table employee;
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> CREATE TABLE Employees (
+    ->     emp_id INT PRIMARY KEY,
+    ->     emp_name VARCHAR(50),
+    ->     department VARCHAR(30),
+    ->     salary DECIMAL(10,2),
+    ->     experience INT,
+    ->     city VARCHAR(30)
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO Employees VALUES
+    -> (101,'Rahul','IT',65000,5,'Hyderabad'),
+    -> (102,'Priya','HR',45000,3,'Chennai'),
+    -> (103,'Amit','Finance',70000,6,'Bangalore'),
+    -> (104,'Sneha','IT',80000,8,'Hyderabad'),
+    -> (105,'Kiran','Sales',40000,2,'Pune'),
+    -> (106,'Ravi','HR',50000,4,'Mumbai'),
+    -> (107,'Anjali','IT',90000,10,'Delhi'),
+    -> (108,'Suresh','Finance',55000,5,'Chennai'),
+    -> (109,'Divya','Sales',48000,3,'Hyderabad'),
+    -> (110,'Vikram','IT',75000,7,'Bangalore');
+Query OK, 10 rows affected (0.01 sec)
+Records: 10  Duplicates: 0  Warnings: 0
+mysql> select * from employees;
++--------+----------+------------+----------+------------+-----------+
+| emp_id | emp_name | department | salary   | experience | city      |
++--------+----------+------------+----------+------------+-----------+
+|    101 | Rahul    | IT         | 65000.00 |          5 | Hyderabad |
+|    102 | Priya    | HR         | 45000.00 |          3 | Chennai   |
+|    103 | Amit     | Finance    | 70000.00 |          6 | Bangalore |
+|    104 | Sneha    | IT         | 80000.00 |          8 | Hyderabad |
+|    105 | Kiran    | Sales      | 40000.00 |          2 | Pune      |
+|    106 | Ravi     | HR         | 50000.00 |          4 | Mumbai    |
+|    107 | Anjali   | IT         | 90000.00 |         10 | Delhi     |
+|    108 | Suresh   | Finance    | 55000.00 |          5 | Chennai   |
+|    109 | Divya    | Sales      | 48000.00 |          3 | Hyderabad |
+|    110 | Vikram   | IT         | 75000.00 |          7 | Bangalore |
++--------+----------+------------+----------+------------+-----------+
+10 rows in set (0.00 sec)
+mysql> delimiter @@
+mysql> create procedure get_all_employees()
+    -> begin
+    -> 	    select * from employees;
+    -> end @@
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> delimiter ;
+mysql> call get_all_employees;
++--------+----------+------------+----------+------------+-----------+
+| emp_id | emp_name | department | salary   | experience | city      |
++--------+----------+------------+----------+------------+-----------+
+|    101 | Rahul    | IT         | 65000.00 |          5 | Hyderabad |
+|    102 | Priya    | HR         | 45000.00 |          3 | Chennai   |
+|    103 | Amit     | Finance    | 70000.00 |          6 | Bangalore |
+|    104 | Sneha    | IT         | 80000.00 |          8 | Hyderabad |
+|    105 | Kiran    | Sales      | 40000.00 |          2 | Pune      |
+|    106 | Ravi     | HR         | 50000.00 |          4 | Mumbai    |
+|    107 | Anjali   | IT         | 90000.00 |         10 | Delhi     |
+|    108 | Suresh   | Finance    | 55000.00 |          5 | Chennai   |
+|    109 | Divya    | Sales      | 48000.00 |          3 | Hyderabad |
+|    110 | Vikram   | IT         | 75000.00 |          7 | Bangalore |
++--------+----------+------------+----------+------------+-----------+
+10 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> show procedure status wher db = 'da4';
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'wher db = 'da4'' at line 1
+mysql> show procedure status where db = 'da4';
++------+-------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db   | Name              | Type      | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++------+-------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| da4  | get_all_employees | PROCEDURE | root@localhost | 2026-08-04 10:55:23 | 2026-08-04 10:55:23 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++------+-------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+1 row in set (0.01 sec)
+
+mysql> delimiter @@
+mysql> create procedure it_employees()
+    -> begin
+    -> 	    select * from employees where department = 'it';
+    -> end @@
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter;
+    -> ^C
+mysql> delimiter ;
+mysql> call it_employees;
++--------+----------+------------+----------+------------+-----------+
+| emp_id | emp_name | department | salary   | experience | city      |
++--------+----------+------------+----------+------------+-----------+
+|    101 | Rahul    | IT         | 65000.00 |          5 | Hyderabad |
+|    104 | Sneha    | IT         | 80000.00 |          8 | Hyderabad |
+|    107 | Anjali   | IT         | 90000.00 |         10 | Delhi     |
+|    110 | Vikram   | IT         | 75000.00 |          7 | Bangalore |
++--------+----------+------------+----------+------------+-----------+
+4 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> show procedure status where db = 'da4';
++------+-------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| Db   | Name              | Type      | Definer        | Modified            | Created             | Security_type | Comment | character_set_client | collation_connection | Database Collation |
++------+-------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+| da4  | get_all_employees | PROCEDURE | root@localhost | 2026-08-04 10:55:23 | 2026-08-04 10:55:23 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
+| da4  | it_employees      | PROCEDURE | root@localhost | 2026-08-04 11:00:53 | 2026-08-04 11:00:53 | DEFINER       |         | cp850                | cp850_general_ci     | utf8mb4_0900_ai_ci |
++------+-------------------+-----------+----------------+---------------------+---------------------+---------------+---------+----------------------+----------------------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> delimiter ##
+mysql> create procedure employee_names()
+    -> begin
+    -> 	    select emp_name from employees;
+    -> end ##
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> delimiter ;
+mysql> call employee_names;
++----------+
+| emp_name |
++----------+
+| Rahul    |
+| Priya    |
+| Amit     |
+| Sneha    |
+| Kiran    |
+| Ravi     |
+| Anjali   |
+| Suresh   |
+| Divya    |
+| Vikram   |
++----------+
+10 rows in set (0.00 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> Terminal close -- exit!
