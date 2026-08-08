@@ -149,6 +149,16 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - EXISTS & NOT EXISTS
 - Practice with Employee and World Database
 
+### Day 17 – MySQL Stored Procedures
+
+- Introduction to Stored Procedures
+- Procedure Syntax and Parameters
+- DELIMITER
+- Creating and Calling Procedures
+- Filtering Data using Procedures
+- SHOW PROCEDURE STATUS
+- Practical Employee Table Examples
+  
 ## Objective
 
 To build a strong foundation in MySQL by learning database concepts and practicing SQL through real-world examples.
