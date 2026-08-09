@@ -1,0 +1,93 @@
+TRIGGERS
+=========
+Introduction to triggers:-
+---------------------------
+A trigger is a special type of stored program that automatically executes in a response to a specific event INSERT,UPDATE, OR DELETE....
+--> Occurring on a specific table.
+unlike a stored procedure a trigger is never called directly . the database engine invokes automatically when the trigger event happens.
+
+Syntax
+------
+
+DELIMITER //
+
+CREATE TRIGGER trigger_name
+{BEFORE | AFTER} {INSERT|UPDATE |DELETE}
+ON table_name
+FOR EACH ROW
+BEGIN
+     ---trigger logic
+     ---use NEW.column_name for inserted/updated values
+     ---use OLD.column_name for deleted/previous values
+END //
+
+DELIMITER ;
+
+Keyword Meaning
+BEFORE:- Trigger fires before the triggering event is applied to the table. Often used for validation.
+After:-  Trigger fires 
+
+
+=========================
+QUERIES
+
+CREATE TABLE Employees (
+    emp_id INT PRIMARY KEY,
+    emp_name VARCHAR(50),
+    department VARCHAR(30),
+    salary DECIMAL(10,2),
+    experience INT,
+    city VARCHAR(30)
+);
+
+
+
+INSERT INTO Employees VALUES
+(101,'Rahul','IT',65000,5,'Hyderabad'),
+(102,'Priya','HR',45000,3,'Chennai'),
+(103,'Amit','Finance',70000,6,'Bangalore'),
+(104,'Sneha','IT',80000,8,'Hyderabad'),
+(105,'Kiran','Sales',40000,2,'Pune');
+
+
+CREATE TABLE Employee_Audit(
+    audit_id INT AUTO_INCREMENT PRIMARY KEY,
+    emp_id INT,
+    action_type VARCHAR(20),
+    old_salary DECIMAL(10,2),
+    new_salary DECIMAL(10,2),
+    action_time DATETIME
+);
+
+
+mysql> SELECT*FROM EMPLOYEES;
++--------+----------+------------+----------+------------+-----------+
+| emp_id | emp_name | department | salary   | experience | city      |
++--------+----------+------------+----------+------------+-----------+
+|    101 | Rahul    | IT         | 65000.00 |          5 | Hyderabad |
+|    102 | Priya    | HR         | 45000.00 |          3 | Chennai   |
+|    103 | Amit     | Finance    | 70000.00 |          6 | Bangalore |
+|    104 | Sneha    | IT         | 80000.00 |          8 | Hyderabad |
+|    105 | Kiran    | Sales      | 40000.00 |          2 | Pune      |
++--------+----------+------------+----------+------------+-----------+
+5 rows in set (0.00 sec)
+
+BEFORE
+------
+
+mysql> DELIMITER //
+mysql> CREATE TRIGGER trg_before_insert_salary
+    -> BEFORE INSERT
+    -> ON EMPLOYEES
+    -> FOR EACH ROW
+    -> BEGIN
+    -> IF NEW.SALARY<20000 THEN
+    -> SIGNAL SQLSTATE '45000'
+    -> SET MESSAGE_TEXT ='SALARY CANNOT BE LESS THAN 20000';
+    -> END IF;
+    -> END //
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> DELIMITER ;
+mysql> INSERT INTO EMPLOYEES VALUES(106,'ARJUN','IT',15000,3,'DELHI');
+ERROR 1644 (45000): SALARY CANNOT BE LESS THAN 20000
