@@ -158,6 +158,17 @@ This repository contains my daily learning notes, SQL queries, practice exercise
 - Filtering Data using Procedures
 - SHOW PROCEDURE STATUS
 - Practical Employee Table Examples
+
+
+### Day 18 – MySQL Triggers
+
+Learned about MySQL Triggers, including:
+- BEFORE and AFTER triggers
+- INSERT, UPDATE and DELETE events
+- NEW and OLD values
+- Trigger syntax
+- Salary validation using SIGNAL
+- Employee audit tables
   
 ## Objective
 
