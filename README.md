@@ -169,6 +169,18 @@ Learned about MySQL Triggers, including:
 - Trigger syntax
 - Salary validation using SIGNAL
 - Employee audit tables
+
+### Day 19 - Database Normalization & ER Model
+
+- Database Normalization and Data Organization
+- Data Redundancy and Database Anomalies
+- Normal Forms: 1NF, 2NF, 3NF, BCNF, 4NF & 5NF
+- Entity-Relationship (ER) Model
+- Entities and Attribute Types
+- Relationships and Relationship Types
+- Cardinality and Database Relationships
+- Database Design Principles 
+
   
 ## Objective
 
