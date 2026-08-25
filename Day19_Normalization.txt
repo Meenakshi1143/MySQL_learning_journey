@@ -1,0 +1,203 @@
+DATABASE NORMALIZATION & ER MODEL
+---------------------------------
+
+1. DATABASE NORMALIZATION
+
+Normalization is the process of organizing data into tables to reduce data redundancy and avoid data anomalies.
+
+Main Goals:
+-----------
+• Reduce duplicate data
+• Maintain proper data dependencies
+• Improve data accuracy and consistency
+
+DATA REDUNDANCY
+
+Data redundancy means storing the same data in more than one place.
+
+Example:
+If a customer's city and phone number are repeated in multiple order records, it creates unnecessary duplicate data.
+
+ANOMALIES
+
+1. Insertion Anomaly :
+   Unable to insert certain data unless some unrelated data is also available.
+
+2. Update Anomaly :
+   The same data exists in multiple rows, so we need to update it everywhere.
+
+3. Deletion Anomaly :
+   Deleting one record may accidentally remove other useful information.
+
+
+2. NORMAL FORMS
+
+1NF → 2NF → 3NF → BCNF → 4NF → 5NF
+
+1NF – FIRST NORMAL FORM
+
+• Each column must contain atomic (single) values.
+• No multiple values in one cell.
+• No repeating groups.
+
+Example:
+
+BEFORE:
+StudentID | Name   | Subjects
+1         | Anitha | Maths, Science, English
+
+AFTER:
+StudentID | Name   | Subject
+1         | Anitha | Maths
+1         | Anitha | Science
+1         | Anitha | English
+
+---
+
+2NF – SECOND NORMAL FORM
+
+• Table must already be in 1NF.
+• Every non-key attribute must depend on the complete primary key.
+• Removes Partial Dependency.
+
+This mainly applies when the primary key contains multiple columns.
+
+---
+
+3NF – THIRD NORMAL FORM
+
+• Table must already be in 2NF.
+• Non-key attributes should not depend on other non-key attributes.
+• Removes Transitive Dependency.
+
+In simple words:
+
+Every column should depend directly on the primary key.
+
+---
+
+BCNF – BOYCE-CODD NORMAL FORM
+
+• A stricter version of 3NF.
+• For every functional dependency A → B, A must be a Super Key.
+
+---
+
+4NF – FOURTH NORMAL FORM
+
+• Table must be in BCNF.
+• Removes Multi-Valued Dependencies.
+• Avoids storing independent multi-valued facts together.
+
+---
+
+5NF – FIFTH NORMAL FORM
+
+• Also called Project-Join Normal Form (PJNF).
+• Deals with Join Dependencies.
+• Tables are divided so they can be reconstructed correctly using joins.
+
+---
+
+3. ENTITY-RELATIONSHIP (ER) MODEL
+
+ER Model is a visual way of designing a database before creating actual tables.
+
+It shows:
+
+• Entities
+• Attributes
+• Relationships
+• Cardinality
+
+---
+
+ENTITY
+
+An entity is a real-world object or concept about which data is stored.
+
+Examples:
+Student
+Employee
+Course
+
+Types:
+
+Strong Entity
+• Has its own primary key.
+• Can exist independently.
+
+Weak Entity
+• Depends on a strong entity.
+• Does not have its own primary key.
+
+---
+
+ATTRIBUTES
+----------------------------
+Attributes are properties that describe an entity.
+
+Types of Attributes:
+----------------------------
+1. Simple / Atomic
+   Cannot be divided further.
+
+2. Composite
+   Can be divided into smaller attributes.
+
+Example:
+Address → City + State + Pincode
+
+3. Derived
+   Calculated from another attribute.
+
+Example:
+Age → derived from Date of Birth
+
+4. Multi-Valued
+   Can contain more than one value.
+
+Example:
+Phone Numbers
+
+5. Key Attribute
+   Uniquely identifies an entity.
+
+Example:
+StudentID
+
+
+RELATIONSHIPS
+-----------------------------
+A relationship shows how two or more entities are connected.
+
+Types:
+--------------
+1:1 → One-to-One
+Example:
+One Person → One Passport
+
+1:N → One-to-Many
+Example:
+One Department → Many Employees
+
+M:N → Many-to-Many
+Example:
+Many Students → Many Courses
+
+
+CARDINALITY
+------------------------------
+Cardinality represents how many instances of one entity can be associated with another entity.
+
+Example:
+----------------
+Department (1) → Employee (N)
+
+Meaning:
+One Department can have many Employees.
+
+NOTE:
+--------------
+Normalization helps to reduce redundancy, avoid anomalies and maintain data integrity.
+ER Modeling helps to visually design the database structure before creating tables in MySQL.
