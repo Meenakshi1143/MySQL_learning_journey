@@ -1,101 +1,531 @@
+\# Student Management System
 
-# Student Management System
 
-##  Project Overview
 
-The **Student Management System** is a relational database project developed using **MySQL**.
+\## Project Overview
 
-The main purpose of this project is to design and implement a structured database for managing student academic and administrative information.
 
-The system stores and manages information related to:
 
-- Students
-- Departments
-- Instructors
-- Courses
-- Enrollments
-- Attendance
-- Examinations
-- Results
-- Payments
+The \*\*Student Management System\*\* is a relational database project developed using \*\*MySQL\*\*.
 
-The project demonstrates how a relational database can be designed using **entities, attributes, primary keys, foreign keys, relationships, and constraints**.
 
-It also demonstrates practical SQL operations ranging from basic queries to advanced data analysis using:
 
-- SELECT
-- WHERE
-- LIKE
-- BETWEEN
-- IN
-- ORDER BY
-- GROUP BY
-- HAVING
-- Aggregate Functions
-- INNER JOIN
-- LEFT JOIN
-- Multiple-table JOINs
-- Subqueries
-- Correlated Subqueries
-- EXISTS
-- NOT EXISTS
-- CASE
-- Date Functions
-- String Functions
-- Window Functions
-- RANK()
-- DENSE_RANK()
-- PARTITION BY
-- Conditional Aggregation
-- SQL Views
+The project is designed to manage student academic information such as departments, courses, enrollments, attendance, examinations, results, and payments.
 
-The project also performs real-world analysis such as:
 
-- Student performance analysis
-- Attendance percentage calculation
-- Department-wise topper identification
-- Examination ranking
-- Payment analysis
-- Pending payment identification
-- Student-wise academic reports
 
----
+The database demonstrates the implementation of:
 
-# 🎯 Project Objectives
 
-The main objectives of this project are:
 
-1. To design a relational database for managing student information.
-2. To create relationships between different academic entities.
-3. To maintain data integrity using primary keys and foreign keys.
-4. To implement SQL constraints for data validation.
-5. To store and manage student enrollment information.
-6. To track student attendance.
-7. To manage examinations and examination results.
-8. To manage student fee/payment information.
-9. To perform SQL queries from basic to advanced levels.
-10. To analyze student academic performance.
-11. To calculate student attendance percentages.
-12. To identify top-performing students.
-13. To analyze department-wise performance.
-14. To generate reusable reports using SQL Views.
+\- Database and table creation
 
----
+\- Primary and foreign keys
 
-# 🛠️ Technologies Used
+\- NOT NULL, UNIQUE, DEFAULT and CHECK constraints
 
-| Technology | Purpose |
-|---|---|
-| MySQL | Database Management System |
-| SQL | Database creation, manipulation and analysis |
-| MySQL Workbench | Database development and query execution |
-| GitHub | Project version control and documentation |
+\- Data insertion
 
----
+\- Table relationships
 
-# 🗄️ Database Information
+\- Joins
 
-### Database Name
+\- Aggregate functions
+
+\- Subqueries
+
+\- CASE expressions
+
+\- GROUP BY and HAVING
+
+\- ORDER BY
+
+\- Date functions
+
+\- SQL queries of different difficulty levels
+
+\- Data analysis using SQL
+
+
+
+\## Technologies Used
+
+
+
+\- MySQL
+
+\- SQL
+
+\- GitHub
+
+
+
+\## Database Name
+
+
 
 ```sql
-student_management
+
+student\_management
+
+```
+
+
+
+\## Database Entities
+
+
+
+\### 1. STUDENTS
+
+Stores basic information about students.
+
+
+
+Important columns:
+
+\- `student\_id` – Primary Key
+
+\- `dept\_id` – Foreign Key
+
+\- `first\_name`
+
+\- `last\_name`
+
+\- `gender`
+
+\- `email`
+
+\- `phone`
+
+\- `date\_of\_birth`
+
+\- `enroll\_date`
+
+
+
+\### 2. DEPARTMENTS
+
+Stores department information.
+
+
+
+\- `dept\_id` – Primary Key
+
+\- `dept\_name`
+
+\- `location`
+
+
+
+\### 3. INSTRUCTORS
+
+Stores instructor information.
+
+
+
+\- `instructor\_id` – Primary Key
+
+\- `first\_name`
+
+\- `last\_name`
+
+\- `email`
+
+\- `phone`
+
+\- `qualification`
+
+\- `hire\_date`
+
+
+
+\### 4. COURSES
+
+Stores courses offered by departments.
+
+
+
+\- `course\_id` – Primary Key
+
+\- `course\_name`
+
+\- `credits`
+
+\- `dept\_id` – Foreign Key
+
+\- `instructor\_id` – Foreign Key
+
+
+
+\### 5. ENROLLMENTS
+
+Stores which students are enrolled in which courses.
+
+
+
+\- `enrollment\_id` – Primary Key
+
+\- `student\_id` – Foreign Key
+
+\- `course\_id` – Foreign Key
+
+\- `enroll\_date`
+
+\- `semester`
+
+\- `academic\_year`
+
+
+
+\### 6. ATTENDANCE
+
+Stores student attendance for enrolled courses.
+
+
+
+\- `attendance\_id` – Primary Key
+
+\- `enrollment\_id` – Foreign Key
+
+\- `attendance\_date`
+
+\- `status`
+
+
+
+\### 7. EXAMINATIONS
+
+Stores examination details for courses.
+
+
+
+\- `exam\_id` – Primary Key
+
+\- `course\_id` – Foreign Key
+
+\- `exam\_type`
+
+\- `exam\_date`
+
+\- `max\_marks`
+
+
+
+\### 8. RESULTS
+
+Stores marks obtained by students in examinations.
+
+
+
+\- `result\_id` – Primary Key
+
+\- `exam\_id` – Foreign Key
+
+\- `student\_id` – Foreign Key
+
+\- `marks\_obtained`
+
+\- `grade`
+
+
+
+\### 9. PAYMENTS
+
+Stores student fee/payment information.
+
+
+
+\- `payment\_id` – Primary Key
+
+\- `student\_id` – Foreign Key
+
+\- `payment\_date`
+
+\- `amount`
+
+\- `payment\_type`
+
+\- `payment\_status`
+
+
+
+\## Main Relationships
+
+
+
+\- One department can have many students.
+
+\- One department can offer many courses.
+
+\- One instructor can teach many courses.
+
+\- One student can have many enrollments.
+
+\- One course can have many enrollments.
+
+\- One enrollment can have many attendance records.
+
+\- One course can have many examinations.
+
+\- One examination can have many results.
+
+\- One student can have many result records.
+
+\- One student can make many payments.
+
+
+
+\## Cardinality Summary
+
+
+
+| Relationship | Cardinality |
+
+|---|---|
+
+| DEPARTMENTS → STUDENTS | 1 : N |
+
+| DEPARTMENTS → COURSES | 1 : N |
+
+| INSTRUCTORS → COURSES | 1 : N |
+
+| STUDENTS → ENROLLMENTS | 1 : N |
+
+| COURSES → ENROLLMENTS | 1 : N |
+
+| ENROLLMENTS → ATTENDANCE | 1 : N |
+
+| COURSES → EXAMINATIONS | 1 : N |
+
+| EXAMINATIONS → RESULTS | 1 : N |
+
+| STUDENTS → RESULTS | 1 : N |
+
+| STUDENTS → PAYMENTS | 1 : N |
+
+
+
+\## SQL Queries Included
+
+
+
+\### Easy Level
+
+
+
+Queries using:
+
+
+
+\- SELECT
+
+\- WHERE
+
+\- Comparison operators
+
+\- BETWEEN
+
+\- IN
+
+\- LIKE
+
+\- IS NULL
+
+\- ORDER BY
+
+\- DISTINCT
+
+
+
+\### Intermediate Level
+
+
+
+Queries using:
+
+
+
+\- COUNT()
+
+\- SUM()
+
+\- AVG()
+
+\- MAX()
+
+\- MIN()
+
+\- GROUP BY
+
+\- HAVING
+
+\- INNER JOIN
+
+\- LEFT JOIN
+
+\- DATE functions
+
+\- CASE
+
+
+
+\### Hard Level
+
+
+
+Queries using:
+
+
+
+\- Multiple-table JOINs
+
+\- Subqueries
+
+\- Correlated subqueries
+
+\- EXISTS
+
+\- NOT EXISTS
+
+\- Common Table Expressions (CTEs)
+
+\- Window functions
+
+\- Ranking
+
+\- Conditional aggregation
+
+
+
+\## Example Business Questions
+
+
+
+\### Easy
+
+
+
+1\. Display all students.
+
+2\. Display students from a particular department.
+
+3\. Find students enrolled after a given date.
+
+4\. Find courses having more than 3 credits.
+
+5\. Display students whose names start with 'A'.
+
+
+
+\### Intermediate
+
+
+
+6\. Count students in each department.
+
+7\. Find the average marks for each examination.
+
+8\. Display students with their department names.
+
+9\. Find the number of students enrolled in each course.
+
+10\. Calculate total payments made by each student.
+
+
+
+\### Hard
+
+
+
+11\. Find the top-performing student in each department.
+
+12\. Find students whose marks are above the overall average.
+
+13\. Find courses having more students than the average course enrollment.
+
+14\. Rank students based on their total marks.
+
+15\. Identify students whose attendance percentage is below 75%.
+
+
+
+\## Project Features
+
+
+
+\- Proper relational database design
+
+\- Primary and foreign key implementation
+
+\- Referential integrity
+
+\- Sample records for testing
+
+\- Multiple table relationships
+
+\- SQL queries from basic to advanced levels
+
+\- Academic performance analysis
+
+\- Attendance analysis
+
+\- Fee/payment analysis
+
+\- ER diagram included
+
+
+
+\## Learning Outcomes
+
+
+
+Through this project, the following concepts were practiced:
+
+
+
+\- Database design
+
+\- Normalization
+
+\- Primary and foreign keys
+
+\- Constraints
+
+\- SQL query writing
+
+\- Joins and relational analysis
+
+\- Aggregate functions
+
+\- Subqueries
+
+\- Conditional logic using CASE
+
+\- Grouping and filtering
+
+\- Date-based analysis
+
+\- Window functions
+
+\- ER diagram design
+
+
+
+\## Project Structure
+
+
+
+```text
+
+Student-Management-System/
+
+│
+
+├── README.md
+
+├── student\_management\_queries.sql
+
+└── student\_management\_ER.png
+
+```
